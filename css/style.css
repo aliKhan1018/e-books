@@ -1,5 +1,101 @@
+*{
+  scroll-behavior: smooth;
+}
+:root{
+  --theme-color-1: #e9b544;
+  /* complementary color to theme-color-1 */
+  /* --theme-color-2: #4478E9;  */
+  /*  my color */
+  --theme-color-2: #f4f4f4; 
+  --theme-color-3: #525252; 
+  --theme-font-color-light: #fff;
+  --theme-font-color-dark: #000;
+  --theme-color-1-selected: #ddac41;
+}
+.imgbox{
+  width: 100px;
+  height: 100px;
+  /* background: black; */
+  border: 1px solid black;
+  overflow: hidden;
+
+}
+.imgbox img{
+  overflow: hidden;
+}
+.our-services .left-content .heading, .our-services .left-content p{
+  color: #000;
+}
+.our-services .left-content .heading{
+  font-size: 3rem;
+  font-family: 'playfair display', serif;
+}
+
+.login-section{
+  background-color: var(--theme-color-2);
+  height: auto;
+  padding: 10rem 0;
+  width: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.login-section form
+{
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 60%;
+  height: auto;
+  padding: 5rem 0;
+  border: 1px solid black;
+  position: relative;
+}
+.login-section form h1
+{
+  color: var(--theme-color-1);
+  background: var(--theme-color-2);
+  position: absolute;
+  top: -40px;
+  left: 50px;
+  width: 180px;
+  text-align: center;
+}
+.login-section form td:nth-child(even){
+  min-width: 400px;
+}.login-section form td:nth-child(odd){
+  min-width: 300px;
+}
+.login-section form input[type=text],
+ .login-section form input[type=password],
+  .login-section form input[type=email], 
+  .login-section form input[type=tel]{
+  width: 100%;
+  background: none;
+  outline: none;
+  border: none;
+  border-bottom: 1px solid black;
+  padding: 5px;
+}
+.login-section form input[type=date],
+.login-section form select
+{
+  background: none;
+  border: none;
+  border-bottom: 1px solid black;
+  padding: 5px;
+}
+.login-section form input, .login-section form select{
+  margin-bottom: 10px;
+  margin-top: 10px;
+}
+/* .login-section form label{
+} */
+
+
 body {
-  font-family: 'Raleway', 'sans-serif';
+  font-family: 'Nunito', 'sans-serif';
   background-color: #fff;
 }
 
@@ -14,6 +110,7 @@ p {
   color: #7a7a7a;
   line-height: 24px;
   left: 0.25px;
+  font-family: 'nunito', sans-serif;
 }
 
 section {
@@ -28,38 +125,57 @@ section {
 }
 
 .section-heading span {
-  font-size: 17px;
+  font-size: 4rem;
+  /* font-family: 'playfair display'; */
+  letter-spacing: 2px;
+  font-weight: bold;
   display: block;
   margin: 0px;
-  color: #4883ff;
+  color: var(--theme-font-color-light);
 }
 
 .section-heading h2 {
   margin-bottom: 0px;
-  margin-top: 14px;
+  margin-top: 20px;
   font-size: 23px;
   font-weight: 600;
-  color: #232323;
+  color: #fff;
   letter-spacing: 0.5px;
 }
+.section-heading h2::after {
+  content: '';
+  display: block;
+  width: 250px;
+  height: 3px;
+  background: white;
+  position: absolute;
+  top: 57px;
+  left: 50%;
+  transform: translateX(-50%);
+}
 
-
-.blue-button a {
+.blue-button a, .submit {
   display: inline-block;
-  background-color: #4883ff;
+  background-color: var(--theme-color-1);
   color: #fff;
   font-size: 15px;
   font-weight: 500;
   padding: 10px 16px;
   text-decoration: none;
-  border: 2px solid #4883ff;
-  transition: all 0.5s;
+  border: 2px solid var(--theme-color-2);
+  position: relative;
+  z-index: 1;
+  /* transition: all 0.5s; */
 }
-
-.blue-button a:hover {
-  background-color: transparent;
-  color: #4883ff;
+.submit{
+  float: right;
 }
+.submit:hover, .blue-button a:hover{
+  background: var(--theme-color-1-selected);
+}
+/* .blue-button:hover {
+  background-color: var(--theme-color-1-selected);
+} */
 
 
 /* Header Style */
@@ -82,7 +198,7 @@ section {
 #header {
   overflow: visible;
   position: relative;
-  background-color: #fff;
+  background-color: var(--theme-color-1);
 }
 
 
@@ -125,7 +241,7 @@ section {
   height: 100px;
   line-height: 100px;
   color: inherit;
-  speak: none;
+  /* speak: none; */
   border: none;
 }
 
@@ -173,14 +289,23 @@ section {
   transition: all 0.5s;
 }
 
-#primary-nav .active > a,
-#primary-nav li > a:hover,
-#primary-nav li.selected > a {
-  color: #4883ff;
+#primary-nav .active > a{
+  color: var(--theme-font-color-light);
+}
+#primary-nav li:hover {
+  background: var(--theme-color-1);
+  text-decoration: underline;
+}
+#primary-nav li:hover > a {
+  color: var(--theme-font-color-light);
+}
+#primary-nav li > a:hover
+{
+  color:black;
 }
 
 .sub-menu {
-  border-top: 3px solid #4883ff;
+  border-top: 3px solid var(--theme-color-3);
 }
 
 .sub-menu li a {
@@ -381,8 +506,9 @@ section.banner {
 
 .banner .banner-caption .line-dec {
   width: 80px;
-  height: 3px;
-  background-color: #4883ff;
+  height: 5px;
+  margin-top: -10px;
+  background-color: var(--theme-color-1);
 }
 
 .banner .banner-caption h2 {
@@ -391,6 +517,9 @@ section.banner {
   font-size: 42px;
   letter-spacing: 0.5px;
   color: #fff;
+}
+.banner .banner-caption h2:nth-child(1) {
+  margin-top: 50px;
 }
 
 .banner .banner-caption h4 {
@@ -551,7 +680,81 @@ section.banner {
   z-index: 9;
 }
 
-.featured-item { margin-bottom: 30px; }
+.featured-item { 
+  margin-bottom: 30px; width: 250px; 
+  transition: .2s ease-in-out;
+  position: relative;
+}
+
+.item-count{
+  padding: 2px 3px;
+  position: relative;
+  top: -10px;
+}
+
+.back-info{
+  width: 100%;
+  height: 100%;
+  background: var(--theme-color-2);
+  position: absolute;
+  top: 0;
+  left: 0;
+  z-index: 1;
+  opacity: 0;
+  pointer-events: none;
+  transition: .3s ease-in-out;
+  padding: 0.5rem 1.5rem;
+  border: 2px solid var(--theme-color-3);
+  text-align: center;
+}
+.back-info .title{
+  font-size: 2.5rem;
+  font-weight: 600;
+  width: 100%;
+  text-align: center;
+  font-family: 'playfair display', serif;
+  color: black;
+}
+.back-info .author{
+  color: black;
+  font-family: 'playfair display', serif;
+  font-size: 1.5rem;
+  position: relative;
+  margin-bottom: 30px;
+}
+.back-info .author::after{
+  content: '';
+  display: block;
+  width: 30px;
+  height: 3px;
+  background: var(--theme-color-1);
+  position: absolute;
+  top: 30px;
+  left: 50%;
+  transform: translateX(-50%);
+}
+.back-info .price{
+  font-family: 'playfair display';
+  font-size: 3rem;
+  color: black;
+}
+.back-info .desc{
+
+}
+.buy-button{
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  width: max-content;
+  background: var(--theme-color-1);
+  padding: 0.5rem;
+}
+.buy-button{
+  color:var(--theme-font-color-light)
+}
+.buy-button:hover{
+  background: var(--theme-color-1-selected);
+}
 
 .popular-places .popular-item .thumb .plus-button i {
   width: 30px;
@@ -570,16 +773,30 @@ section.banner {
 }
 
 .featured-places .featured-item .thumb {
+  overflow: hidden; 
   position: relative;
   z-index: 1;
+  border: 2px solid var(--theme-color-2);
 }
 
 .featured-places .featured-item .thumb img {
   width: 100%;
-  overflow: hidden;
-  border-top-left-radius: 5px;
-  border-top-right-radius: 5px;
+  overflow: hidden; 
+  transition: .2s ease-in-out;
+  /* border-radius: 5px; */
+  height: 300px;
 }
+.featured-places .featured-item:hover {
+  cursor: pointer;
+}
+.featured-places .featured-item:hover img{
+  transform: rotateY(180deg);
+}
+.featured-places .featured-item:hover .back-info {
+  opacity: 1;
+  pointer-events: all;
+}
+
 
 .featured-places .featured-item .thumb .overlay-content {
   position: absolute;
@@ -780,9 +997,10 @@ section.our-services .service-item h4 {
 }
 
 section#video-container {
-  background-image: url(../img/contact-image-1-1920x700.jpg);
+  background-image: url(../img/_/antonio-scalogna-JbhvqDMEYmg-unsplash.jpg);
   background-position: center;
   background-repeat: no-repeat;
+  background-attachment: fixed;
   background-size: cover;
 }
 
@@ -1094,7 +1312,7 @@ textarea.form-control {
   width: 60%;
   margin: 0 auto;
   background-color: #fff;
-  //background-color: #fff;
+  /* background-color: #fff; */
   box-shadow: 0 8px 16px 0 rgba(0,0,0,0.2),0 6px 20px 0 rgba(0,0,0,0.19);
 }
 .modal-animated-in {
@@ -1324,9 +1542,9 @@ footer .contact-info ul li a {
 }
 
 main > section { 
-  background: #fff;  
+  background: var(--theme-color-2);  
 }
   
 main > section:nth-child(even) { 
-  background: #f8f8f8; 
+  background: var(--theme-color-1); 
 }

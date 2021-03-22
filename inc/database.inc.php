@@ -6,7 +6,7 @@
         private $host = "localhost";
         private $user = "root";
         private $pswd = "";
-        private $db = "ecomdb";
+        private $db = "ebookdb";
         private $link = null;
 
 
@@ -19,7 +19,7 @@
                 echo Utility::console_log("database connected!");
             }
             else{
-                echo Utility::console_log("database not connected!");
+                echo Utility::console_log("database not connected! mysqli error no: " . mysqli_errno($this->link));
                 die("<br>mysqli error no: " . mysqli_errno($this->link));
             }
         }
@@ -39,15 +39,15 @@
             return $res;
         }
 
-        public function insert(){
+        public function insert_user(){
             $q = "INSERT INTO TABLENAME VALUES()"; // query to execute.
             $res = $this->query($q); // run the query.
         }
 
         public function delete_entity($table_name, $id){
-            $q = "SELECT * FROM '$table_name' WHERE ID = $id";
+            $q = "DELETE FROM $table_name WHERE id = $id";
             $res = $this->query($q);
-            return $res->fetch_assoc();
+            return $res;
         }
 
         
@@ -69,6 +69,22 @@
             return $res;
         }
 
+        public function login_user($email, $pswd){
+            $q = "select * from user where email='$email' and password='$pswd'";
+            $res = $this->query($q);
+            $data = $res->fetch_assoc();
+            $id = $data["id"];
+            return $id ? true : false;
+        }
+
+        public function user_exists($email){
+            $q = "select * from user where email='$email'";
+            $res = $this->query($q);
+            $data = $res->fetch_assoc();
+            $id = $data["id"];
+            return $id ? true : false;
+        }
+        
 
     }
 

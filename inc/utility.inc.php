@@ -6,6 +6,10 @@ class Utility{
         return "<script>" . $code . "</script>";
     }
 
+    static function alert($msg){
+        return "<script>alert('" . $msg . "');</script>";
+    }
+
     static function console_log($msg){
         return "<script>console.log('" . $msg . "');</script>";
     }
@@ -26,11 +30,18 @@ class Utility{
         return $_;
     }
 
+    static function hide_card_digits($card_no){
+        $_ = substr($card_no, 0, 6) . "****" . substr($card_no, 9, -1);
+        return $_;
+    }
+
     static function echo_nl($msg){
         echo $msg . "<br>";
     }
 
+    static function get_date_formatted(){
+        
+        return date("Y-m-d");
+    }
 
 }
-
-?>
