@@ -32,6 +32,8 @@ if(isset($_POST["update"])){
     $db->update_entity('user', 'address', $a, $u_id);
     $db->update_entity('user', 'contactnumber', $cn, $u_id);
     $db->update_entity('user', 'gender', $g, $u_id);
+
+    echo Utility::alert("Changes Saved!");
 }
 
 ?>

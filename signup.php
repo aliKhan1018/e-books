@@ -19,6 +19,7 @@ if (isset($_POST["reg"])) {
     if ($user) {
         echo Utility::alert("This email is already in use.");
         header("signup.php");
+        die;
     } else {
         $img = $_FILES["image"]["name"];
         $path = "./img/uploaded/" . $img;
@@ -81,7 +82,7 @@ if (isset($_POST["reg"])) {
                     <td>
                         <label for="">Contact Number: </label>
                     </td>
-                    <td><input type="tel" name="contact" placeholder="Enter your contact number" pattern="[0-9+]" id=""></td>
+                    <td><input type="tel" name="contact" placeholder="Enter your contact number"  id=""></td>
                 </tr>
                 <tr>
                     <td><label for="">Address <small>(optional)</small>: </label></td>
@@ -144,12 +145,12 @@ if (isset($_POST["reg"])) {
     }
 </script>
 
-<script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyCk3Q8M-bKJm11CpLU68bSKkocmkZsa5oU&callback=myMap"></script>
+<script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyCk3Q8M-bKJm11CpLU68bSKkocmkZsa5oU&callback=myMap"></script> -->
 <script>
     var loadFile = function(event) {
         var image = document.getElementById('output');
         image.src = URL.createObjectURL(event.target.files[0]);
     };
-</script> -->
+</script>
 
 </html>

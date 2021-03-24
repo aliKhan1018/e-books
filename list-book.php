@@ -26,22 +26,22 @@ session_start();
             <div class="main-content">
                 <section class="section">
                     <div class="section-header">
-                        <h1>Users List</h1>
+                        <h1>Books List</h1>
                         <div class="section-header-breadcrumb">
                             <div class="breadcrumb-item active"><a href="admin-index.php">Dashboard</a></div>
-                            <div class="breadcrumb-item">Users List</div>
+                            <div class="breadcrumb-item">Books List</div>
                         </div>
                     </div>
 
                     <div class="section-body">
-                        <h2 class="section-title">Users</h2>
-                        <p class="section-lead">Here are all the registered users.</p>
+                        <h2 class="section-title">Books</h2>
+                        <p class="section-lead">Here are all the books.</p>
 
                         <div class="row">
                             <div class="col-12 col-md-12 col-lg-12">
                                 <div class="card">
                                     <div class="card-header">
-                                        <h4>Users</h4>
+                                        <h4>Books</h4>
                                     </div>
                                     <div class="card-body p-0">
                                         <div class="table-responsive">
@@ -49,27 +49,29 @@ session_start();
                                                 <tr>
                                                     <th>ID</th>
                                                     <th>Name</th>
-                                                    <th>Email</th>
-                                                    <th>Contact</th>
-                                                    <th>Created At</th>
+                                                    <th>Author</th>
+                                                    <th>Publisher</th>
+                                                    <th>Price</th>
+                                                    <th>Stock</th>
                                                     <th>Action</th>
                                                 </tr>
                                                 <?php
-                                                $res = $db->get_entities('user');
+                                                $res = $db->get_entities('book');
+                                                
                                                 while ($row = mysqli_fetch_array($res)) {
-                                                    if ($row["isadmin"] == 1) {
-                                                        continue;
-                                                    }
                                                 ?>
                                                     <tr>
                                                         <td><?= $row["id"] ?></td>
-                                                        <td><?= $row["name"] ?></td>
-                                                        <td><?= $row["email"] ?></td>
-                                                        <td><?= $row["contactnumber"] ?></td>
-                                                        <td><?= $row["createdon"] ?></td>
-                                                        <td><a href="details-user.php?id=<?=$row["id"]?>" class="btn btn-secondary">Detail</a> / <a href="delete-confirm-user.php?id=<?=$row["id"]?>" class="btn btn-danger">Delete</a></td>
+                                                        <td><?= $row["title"] ?> <div class="imgbox imgbox-sm" style="float:left; margin-right: 15px;"><img src="./img/uploaded/<?=$row["image"]?>" alt=""></div></td>
+                                                        <td><?= $row["author"] ?></td>
+                                                        <td><?= $row["publisher"] ?></td>
+                                                        <td><?= $row["price"] ?></td>
+                                                        <td><?= $row["stock"] ?></td>
+                                                        <td><a href="edit-book.php" class="btn btn-primary">Edit</a> / <a href="details-user.php?id=<?=$row["id"]?>" class="btn btn-secondary">Detail</a> / <a href="delete-confirm-user.php?id=<?=$row["id"]?>" class="btn btn-danger">Delete</a></td>
                                                     </tr>
-                                                <?php } ?>
+                                                <?php } if($res->num_rows == 0){
+                                                    echo "<tr><td colspan='7'><div class='alert alert-danger'>No books found!</div></td></tr>";
+                                                }?>
 
                                             </table>
                                         </div>
