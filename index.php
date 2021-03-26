@@ -67,53 +67,30 @@ if(isset($_SESSION["user_id"])){
                 <div class="row">
                     <div class="col-md-12">
                         <div class="section-heading">
-                            <span>Featured Products</span>
+                            <span>Our Top Sellers</span>
                             <h2>GET 'EM NOW!</h2>
                         </div>
                     </div>
                 </div>
                 <div class="row">
+                    <?php
+                        $res = $db->get_entities('book');
+                        while ($row = mysqli_fetch_array($res)) {
+                    ?>
                     <div class="col-md-4 col-sm-6 col-xs-12" style="display: flex; justify-content:center;">
                         <div class="featured-item">
                             <div class="thumb">
-                                <img src="img/books/1984.jpg" alt="">
+                                <img src="img/uploaded/<?=$row['image']?>" alt="">
                             </div>
                             <div class="back-info">
-                                <h1 class="title">1984</h1>
-                                <h2 class="author">George Orwell</h2>
-                                <p>Lorem, ipsum dolor sit amet consectetur adipisicing elit. Voluptatem nemo molestias quide...</p>
-                                <a href="#"><div class="buy-button" style="width: 100%;"><b>Buy Now!</b></div></a>
+                                <h1 class="title"><?=$row['title']?></h1>
+                                <h2 class="author"><?=$row['author']?></h2>
+                                <p><?=substr($row['description'], 0, 125)?>...</p>
+                                <a href="book-details.php?id=<?=$row['id']?>"><div class="buy-button" style="width: 100%;"><b>Buy Now!</b></div></a>
                             </div>
                         </div>
                     </div>
-
-                    <div class="col-md-4 col-sm-6 col-xs-12" style="display: flex; justify-content:center;">
-                        <div class="featured-item">
-                            <div class="thumb">
-                                <img src="img/books/the-ocean-at-the-end-of-the-lane.jpg" alt="">
-                            </div>
-                            <div class="back-info">
-                                <h1 class="title">The ocean at the end of the lane</h1>
-                                <h2 class="author">Neil Gaiman</h2>
-                                <p>Lorem, ipsum dolor sit amet consectetur adipisicing elit. Voluptatem nemo molestias quide...</p>
-                                <a href="#"><div class="buy-button" style="width: 100%;"><b>Buy Now!</b></div></a>
-                            </div>
-                        </div>
-                    </div>
-
-                    <div class="col-md-4 col-sm-6 col-xs-12" style="display: flex; justify-content:center;">
-                        <div class="featured-item">
-                            <div class="thumb">
-                                <img src="img/books/animalfarm.jpg" alt="">
-                            </div>
-                            <div class="back-info">
-                                <h1 class="title">Animal Farm</h1>
-                                <h2 class="author">George Orwell</h2>
-                                <p>Lorem, ipsum dolor sit amet consectetur adipisicing elit. Voluptatem nemo molestias quide...</p>
-                                <a href="#"><div class="buy-button" style="width: 100%;"><b>Buy Now!</b></div></a>
-                            </div>
-                        </div>
-                    </div>
+                    <?php } ?>
                 </div>
             </div>
         </section>
