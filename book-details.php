@@ -54,10 +54,10 @@ if(isset($_POST['add'])){
                     </div>
 
                     <div class="col-md-6 col-xs-12">
-                        <form action="" method="POST" class="form">
+                        <form action="" method="POST" class="book-form">
                             <h1><?= $_book['title'] ?></h1>
-                            <h1><?= $_book['author'] ?></h1>
-                            <h2><strong class="text-primary">$<?= $_book['price'] ?></strong></h2>
+                            <h2><?= $_book['author'] ?></h2>
+                            <h3><strong class="text-primary">$<?= $_book['price'] ?></strong></h3>
                             <h3>publisher: <?= $_book['publisher'] ?></h3>
                             <h3>published on<small>
                                 <sub>yyyy-mm-dd</sub>

@@ -12,6 +12,21 @@
   --theme-font-color-dark: #000;
   --theme-color-1-selected: #ddac41;
 }
+.book-form h1{
+  font-family: 'playfair display', serif;
+  font-weight: bold;
+}
+.book-form h2{
+  font-family: 'playfair display', serif;
+}
+.book-form h2::after{
+  display: block;
+  content: '';
+  width: 100px;
+  height: 4px;
+  background-color: var(--theme-color-1);
+  margin-top: 15px;
+}
 .imgbox{
   width: 100px;
   height: 100px;
