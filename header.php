@@ -17,24 +17,21 @@
                                 <ul class="sub-menu">
                                     <?php
                                     $c = $db->get_entities('category');
-                                    while ($cat = mysqli_fetch_array($c)) 
-                                    {
+                                    while ($cat = mysqli_fetch_array($c)) {
                                     ?>
                                         <li><a href="#"><?= $cat["name"] ?></a>
                                             <?php
                                             $q = "SELECT * FROM subcategory WHERE category_id = " . $cat['id'];
                                             $sc = $db->query($q);
-                                            if ($sc->num_rows > 0) 
-                                            {
+                                            if ($sc->num_rows > 0) {
                                                 echo "<ul class='sub-menu'>";
-                                                while ($subcat = mysqli_fetch_array($sc)) 
-                                                {
+                                                while ($subcat = mysqli_fetch_array($sc)) {
                                             ?>
-                                                <li><a href="#"><?= $subcat['name'] ?></a></li>
-                                            <?php }
-                                            echo "</ul>";
+                                        <li><a href="#"><?= $subcat['name'] ?></a></li>
+                                <?php }
+                                                echo "</ul>";
                                             } ?>
-                                </li>
+                            </li>
                             </li>
                         <?php } ?>
                         </ul>
@@ -54,24 +51,61 @@
                         <li><a href="contact.php">Contact Us</a></li>
                         <?php
                         if (isset($_SESSION["user_id"])) {
-                            echo '<li>Hi, ' . $u["name"] . '
-                                        <ul class="sub-menu">
-                                        <li><a href="auth-user.php">Profile</a></li>
-                                        <li><a href="logout.php">Logout</a></li>
-                                        </ul> </li>
-                                        <li><a href="cart.php" class="fa fa-shopping-cart"><span class="item-count">';
-                                        if(isset($_SESSION['cart'])){
+                        ?>
+                            <li>Hi, <?= $u["name"] ?>
+                                <ul class="sub-menu">
+                                    <li><a href="auth-user.php">Profile</a></li>
+                                    <li><a href="logout.php">Logout</a></li>
+                                </ul>
+                            </li>
+                            <li>
+                                <a href="cart.php" class="fa fa-shopping-cart">
+                                    <span class="item-count">
+                                        <?php
+                                        if (isset($_SESSION['cart'])) {
                                             echo count($_SESSION['cart']);
                                         } else {
                                             echo '0';
+                                        } ?>
+                                    </span>
+                                </a>
+                                <ul class="cart-dropdown">
+                                    <table class="cart-table">
+                                        <tr>
+                                            <th>Book</th>
+                                            <th>Qty</th>
+                                            <th>Price</th>
+                                        </tr>
+                                        <?php
+                                        if (isset($_SESSION['cart'])) {
+                                            ?>
+                                                <tr class="cart-item">
+                                                    <td>
+                                                        <div class="imgbox-sm"><img src="./img/uploaded/1984.jpg" alt=""></div>
+                                                    </td>
+                                                    <td><input type="number" min="0" value="2" name="" id=""></td>
+                                                    <td>$4.99</td>
+                                                </tr>
+                                                <?php
                                         }
-                                        echo '</span></a></li>';
-                        } else {
-                            echo '<li><a href="signup.php">Sign up</a></li> 
-                                        <li><a href="login.php">Login</a></li>';
+                                        ?>
+                                        <tr>
+                                            <td></td>
+                                            <td></td>
+                                            <td class="cart-total" style="padding: 20px;"><b>Total: $99.99</b></td>
+                                        </tr>
+                                    </table>
+                                    <a href="#" class="btn-checkout"><b>Proceed to Checkout</b></a>
+                                </ul>
+                            </li>
+                        <?php
+                        } else { ?>
+                            <li><a href="signup.php">Sign up</a></li>
+                            <li><a href="login.php">Login</a></li>
+                        <?php
                         }
-
                         ?>
+
 
 
                         <!-- <li><a href="checkout.php">Checkout</a></li> -->
