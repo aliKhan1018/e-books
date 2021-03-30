@@ -2,9 +2,14 @@
 include "./inc/database.inc.php";
 session_start();
 $db = new database();
-if(isset($_SESSION["user_id"])){
+if (isset($_SESSION["user_id"])) {
     $u = $db->get_entity('user', $_SESSION["user_id"]);
+    if ($u["isadmin"] == 1) {
+        header("location: admin-index.php");
+        die;
+    }
 }
+
 ?>
 
 <!DOCTYPE html>
@@ -69,27 +74,34 @@ if(isset($_SESSION["user_id"])){
                         <div class="section-heading">
                             <span>Our Top Sellers</span>
                             <h2>GET 'EM NOW!</h2>
+                            <!-- TODO add logic to show only 3 top selling products -->
                         </div>
                     </div>
                 </div>
                 <div class="row">
                     <?php
-                        $res = $db->get_entities('book');
-                        while ($row = mysqli_fetch_array($res)) {
+                    $res = $db->get_entities('book');
+                    while ($row = mysqli_fetch_array($res)) {
                     ?>
-                    <div class="col-md-4 col-sm-6 col-xs-12" style="display: flex; justify-content:center;">
-                        <div class="featured-item">
-                            <div class="thumb">
-                                <img src="img/uploaded/<?=$row['image']?>" alt="">
-                            </div>
-                            <div class="back-info">
-                                <h1 class="title"><?=$row['title']?></h1>
-                                <h2 class="author"><?=$row['author']?></h2>
-                                <p><?=substr($row['description'], 0, 125)?>...</p>
-                                <a href="book-details.php?id=<?=$row['id']?>"><div class="buy-button" style="width: 100%;"><b>Buy Now!</b></div></a>
+                        <div class="col-md-4 col-sm-6 col-xs-12" style="display: flex; justify-content:center;">
+                            <div class="featured-item">
+                                <div class="thumb">
+                                    <img src="img/uploaded/<?= $row['image'] ?>" alt="">
+                                </div>
+                                <div class="back-info">
+                                    <h1 class="title"><?php echo substr($row['title'], 0, 13);
+                                                        if (strlen($row["title"]) > 13) {
+                                                            echo "...";
+                                                        } 
+                                                        ?> </h1>
+                                    <h2 class="author"><?= $row['author'] ?></h2>
+                                    <p><?= substr($row['description'], 0, 125) ?>...</p>
+                                    <a href="book-details.php?id=<?= $row['id'] ?>">
+                                        <div class="buy-button" style="width: 100%;"><b>Buy Now!</b></div>
+                                    </a>
+                                </div>
                             </div>
                         </div>
-                    </div>
                     <?php } ?>
                 </div>
             </div>

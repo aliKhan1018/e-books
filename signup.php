@@ -1,8 +1,6 @@
 <?php
 include "./inc/database.inc.php";
-
 $db = new database();
-
 if (isset($_POST["reg"])) {
     $n = $_POST["name"];
     $p = $_POST["pswd"];
@@ -47,6 +45,7 @@ if (isset($_POST["reg"])) {
     <title>Document</title>
     <?php include "./head.php"; ?>
 
+
 </head>
 
 <body>
@@ -82,7 +81,7 @@ if (isset($_POST["reg"])) {
                     <td>
                         <label for="">Contact Number: </label>
                     </td>
-                    <td><input type="tel" name="contact" placeholder="Enter your contact number"  id=""></td>
+                    <td><input type="tel" name="contact" placeholder="Enter your contact number" id=""></td>
                 </tr>
                 <tr>
                     <td><label for="">Address <small>(optional)</small>: </label></td>
@@ -122,30 +121,38 @@ if (isset($_POST["reg"])) {
                     <td>
                         <div class="imgbox"><img src="" id="output" alt="Upload an image!"></div>
                         <input type="file" name="image" accept="image/*" id="file" onchange="loadFile(event)">
-                        <a href="./login.php">Already have an account?</a>
                     </td>
                 </tr>
-
+                <tr>
+                    <td><label for="" style="text-decoration: underline; color:tomato;">Do you agree with our terms of use?</label> </td>
+                    <td><input type="checkbox" name="terms" id="" required></td>
+                </tr>
                 <tr>
                     <td></td>
-                    <td><input type="submit" value="Sign Up!" name="reg" class="submit"></td>
+                    <td><a href="./login.php">Already have an account?</a></td>
+                </tr>
+                
+                <tr>
+                    <td></td>
+                    <td><input type="submit" value="Sign Up!" id="modal-6" name="reg" class="submit"></td>
                 </tr>
             </table>
         </form>
     </section>
     <?php include "./footer.php"; ?>
 </body>
-<!-- <script>
-    function myMap() {
-        var mapProp = {
-            center: new google.maps.LatLng(51.508742, -0.120850),
-            zoom: 5,
-        };
-        var map = new google.maps.Map(document.getElementById("googleMap"), mapProp);
-    }
-</script>
+<script src="assets/bundles/lib.vendor.bundle.js"></script>
+<script src="js/CodiePie.js"></script>
 
-<script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyCk3Q8M-bKJm11CpLU68bSKkocmkZsa5oU&callback=myMap"></script> -->
+<!-- JS Libraies -->
+<script src="assets/modules/prism/prism.js"></script>
+
+<!-- Page Specific JS File -->
+<script src="js/page/bootstrap-modal.js"></script>
+
+<!-- Template JS File -->
+<script src="js/scripts.js"></script>
+<script src="js/custom.js"></script>
 <script>
     var loadFile = function(event) {
         var image = document.getElementById('output');

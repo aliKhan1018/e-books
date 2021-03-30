@@ -1,3 +1,8 @@
+<?php
+    if(isset($_SESSION["user_id"])){
+        $u = $db->get_entity('user', $_SESSION["user_id"]);
+    }
+?>
 <div class="wrap">
     <header id="header">
         <div class="container">
@@ -78,21 +83,29 @@
                                         </tr>
                                         <?php
                                         if (isset($_SESSION['cart'])) {
-                                            ?>
+                                            $total_price = 0;
+                                            foreach ($_SESSION['cart'] as $key => $value) {
+                                                $book = $db->get_entity('book', $key);
+                                                $total_price += $book["price"] * $value["qty"];
+                                        ?>
                                                 <tr class="cart-item">
                                                     <td>
-                                                        <div class="imgbox-sm"><img src="./img/uploaded/1984.jpg" alt=""></div>
+                                                        <div class="imgbox-sm"><img src="./img/uploaded/<?= $book["image"] ?>" alt=""></div>
                                                     </td>
-                                                    <td><input type="number" min="0" value="2" name="" id=""></td>
-                                                    <td>$4.99</td>
+                                                    <td>
+                                                        <p><?=$value["qty"]?></p>
+                                                        <!-- <input type="number" min="0" value="<?=$value["qty"];?>" name="quantity" id=""> -->
+                                                    </td>
+                                                    <td>$<?= $book["price"] ?></td>
                                                 </tr>
-                                                <?php
+                                        <?php
+                                            }
                                         }
                                         ?>
                                         <tr>
                                             <td></td>
                                             <td></td>
-                                            <td class="cart-total" style="padding: 20px;"><b>Total: $99.99</b></td>
+                                            <td class="cart-total" style="padding: 20px;"><b>Total: $<?=$total_price?></b></td>
                                         </tr>
                                     </table>
                                     <a href="#" class="btn-checkout"><b>Proceed to Checkout</b></a>

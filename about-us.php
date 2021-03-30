@@ -45,7 +45,7 @@ if(isset($_SESSION["user_id"])){
                 <div class="inner">
                       <div class="section-heading">
                           <span>Here to Serve</span>
-                          <h2>We have a vast library of E-Books</h2>
+                          <h2>Humari books ki daraz😉</h2>
                       </div>
                       <!-- Modal button -->
 

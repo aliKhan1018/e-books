@@ -8,11 +8,7 @@
                         </div>
                         <p>Wubba lubba dub dub we got e-books.</p>
                         <ul class="social-icons">
-                            <li>
-                                <a href="#"><i class="fa fa-facebook"></i></a>
-                                <a href="#"><i class="fa fa-twitter"></i></a>
-                                <a href="#"><i class="fa fa-linkedin"></i></a>
-                            </li>
+                            
                         </ul>
                     </div>
                 </div>
@@ -44,10 +40,10 @@
                         <div class="footer-heading">
                             <h4>Contact Information</h4>
                         </div>
-                        <p><i class="fa fa-map-marker"></i> 212 Barrington Court New York, ABC</p>
+                        <p><i class="fa fa-map-marker"></i> 13/E Gulshan-e-Iqbal, Karachi</p>
                         <ul>
-                            <li><span>Phone:</span><a href="#">+1 333 4040 5566</a></li>
-                            <li><span>Email:</span><a href="#">contact@company.com</a></li>
+                            <li><span>Phone:</span><a href="#">+92 300 1018420</a></li>
+                            <li><span>Email:</span><a href="#">info@iqra.com</a></li>
                         </ul>
                     </div>
                 </div>

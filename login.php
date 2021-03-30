@@ -1,9 +1,7 @@
 <?php
-session_start();
 include "./inc/database.inc.php";
-
+session_start();
 $db = new database();
-
 if (isset($_POST["login"])) {
     $e = $_POST["email"];
     $p = $_POST["pswd"];
@@ -52,7 +50,7 @@ if (isset($_POST["login"])) {
                 <tr>
                     <td>
                         <label for="">Email: </label>
-                    <td><input type="email" name="email" placeholder="Enter your email" id=""></td>
+                    <td><input type="email" name="email" placeholder="Enter your email" id="" required></td>
                     </td>
                 </tr>
                 <tr>
@@ -60,7 +58,18 @@ if (isset($_POST["login"])) {
                         <label for="">Password: </label>
                     </td>
                     <td>
-                        <input type="password" name="pswd" placeholder="Enter your password" id="">
+                        <input type="password" name="pswd" placeholder="Enter your password" id="" required pattern="[0-9a-zA-Z1@#$%^&]{8, 255}">
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                        <label for="">Remember Me <sub>(for 30 days)</sub>: </label>
+                    </td>
+                    <td><input type="checkbox" name="rem" id=""></td>
+                </tr>
+                <tr>
+                    <td></td>
+                    <td>
                         <a href="./signup.php">Don't have an account?</a>
                     </td>
                 </tr>

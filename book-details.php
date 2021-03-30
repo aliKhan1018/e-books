@@ -2,19 +2,24 @@
 include "./inc/database.inc.php";
 $db = new database();
 session_start();
-$book_id = $_GET["id"];
-$_book = $db->get_entity('book', $book_id);
 
 if(isset($_SESSION["user_id"])){
     $u = $db->get_entity('user', $_SESSION["user_id"]);
 }
+else{
+    Utility::redirect_to("login.php");
+}
+
+$book_id = $_GET["id"];
+$_book = $db->get_entity('book', $book_id);
 
 if(isset($_POST['add'])){
+    $quantity = $_POST["quantity"];
     if(isset($_SESSION['cart'])){
-        $_SESSION['cart'][$book_id]['qty'] = $_SESSION['cart'][$book_id]['qty']+1;
+        $_SESSION['cart'][$book_id]['qty'] = $_SESSION['cart'][$book_id]['qty']+$quantity;
     }
     else{
-        $_SESSION['cart'] = array('qty' => 1);
+        $_SESSION['cart'][$book_id] = array('qty' => $quantity);
     }
 }
 
@@ -82,7 +87,7 @@ if(isset($_POST['add'])){
                                 <div class="col-sm-4">
                                     <label class="control-label">Quantity</label>
                                     <div class="form-group">
-                                        <input type="number" class="form-control" value="1" min="0" max="<?= $_book['stock'] ?>">
+                                        <input type="number" name="quantity" class="form-control" value="1" min="0" max="<?= $_book['stock'] ?>">
                                     </div>
                                 </div>
                             </div>
@@ -91,6 +96,10 @@ if(isset($_POST['add'])){
                     </div>
                 </div>
             </div>
+        </section>
+
+        <section class="review-section">
+            
         </section>
     </main>
 
