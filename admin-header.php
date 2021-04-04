@@ -19,8 +19,6 @@ $user = $db->get_entity('user', $id);
                     <div class="dropdown-menu dropdown-menu-right">
                         <div class="dropdown-title">Logged in 5 min ago</div>
                         <a href="features-profile.html" class="dropdown-item has-icon"><i class="fa fa-user"></i> Profile</a>
-                        <a href="features-activities.html" class="dropdown-item has-icon"><i class="fa fa-bolt"></i> Activities</a>
-                        <a href="features-settings.html" class="dropdown-item has-icon"><i class="fa fa-cog"></i> Settings</a>
                         <div class="dropdown-divider"></div>
                         <a href="./logout.php" class="dropdown-item has-icon text-danger"><i class="fa fa-sign-out"></i> Logout</a>
                     </div>
@@ -52,6 +50,15 @@ $user = $db->get_entity('user', $id);
                         <ul class="dropdown-menu">
                             <li><a class="nav-link" href="list-user.php">Users</a></li>
                             <li><a class="nav-link" href="list-book.php">Books</a></li>
+                            <li><a class="nav-link" href="list-category.php">Category</a></li>
+                            <li><a class="nav-link" href="list-subcategory.php">Sub Category</a></li>
+                            <li class="dropdown">
+                                <a href="#" class="nav-link has-dropdown" data-toggle="dropdown"><i class="fa fa-plug"></i> <span>Bridge Entities</span></a>
+                                <ul class="dropdown-menu">
+                                    <li><a href="list-book_genre.php" class="nav-link">Book Genre</a></li>
+                                    <li><a href="list-book_order.php" class="nav-link">Book Order</a></li>
+                                </ul>
+                            </li>
                         </ul>
                     </li>
                     <li class="dropdown">

@@ -48,4 +48,19 @@ class Utility{
         header("location: $url");
         die;
     }
+
+    static function generateRandomString($length) {
+        $characters = '0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ$%&#@!';
+        $charactersLength = strlen($characters);
+        $randomString = '';
+        for ($i = 0; $i < $length; $i++) {
+            $randomString .= $characters[rand(0, $charactersLength - 1)];
+        }
+        return $randomString;
+    }
+
+    static function compareDates($date1, $date2)
+    {
+        return strtotime($date1) - strtotime($date2);
+    }
 }

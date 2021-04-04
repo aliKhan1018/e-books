@@ -67,7 +67,7 @@ session_start();
                                                         <td><?= $row["publisher"] ?></td>
                                                         <td><?= $row["price"] ?></td>
                                                         <td><?= $row["stock"] ?></td>
-                                                        <td><a href="edit-book.php" class="btn btn-primary">Edit</a> / <a href="details-user.php?id=<?=$row["id"]?>" class="btn btn-secondary">Detail</a> / <a href="delete-confirm-user.php?id=<?=$row["id"]?>" class="btn btn-danger">Delete</a></td>
+                                                        <td><a href="./edit-book.php?id=<?=$row["id"];?>" class="btn btn-primary">Edit</a> / <a href="details-book.php?id=<?=$row["id"]?>" class="btn btn-secondary">Detail</a> / <a href="delete-confirm-book.php?id=<?=$row["id"]?>" class="btn btn-danger">Delete</a></td>
                                                     </tr>
                                                 <?php } if($res->num_rows == 0){
                                                     echo "<tr><td colspan='7'><div class='alert alert-danger'>No books found!</div></td></tr>";

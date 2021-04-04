@@ -1,7 +1,6 @@
 <?php
-    // session_abort();
     session_start();
-    $_SESSION["user_id"] = null;    
+    session_destroy();
     header("location: index.php");
     die();
 ?>

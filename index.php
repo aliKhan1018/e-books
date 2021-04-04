@@ -15,9 +15,11 @@ if (isset($_SESSION["user_id"])) {
 <!DOCTYPE html>
 <html>
 
-<?php include "./head.php"; ?>
-<link rel="preconnect" href="https://fonts.gstatic.com">
-<link href="https://fonts.googleapis.com/css2?family=Nunito:wght@200;300;400&display=swap" rel="stylesheet">
+<head>
+    <?php include "./head.php"; ?>
+    <link rel="preconnect" href="https://fonts.gstatic.com">
+    <link href="https://fonts.googleapis.com/css2?family=Nunito:wght@200;300;400&display=swap" rel="stylesheet">
+</head>
 
 <body>
 
@@ -72,7 +74,7 @@ if (isset($_SESSION["user_id"])) {
                 <div class="row">
                     <div class="col-md-12">
                         <div class="section-heading">
-                            <span>Our Top Sellers</span>
+                            <span>New Releases</span>
                             <h2>GET 'EM NOW!</h2>
                             <!-- TODO add logic to show only 3 top selling products -->
                         </div>
@@ -80,6 +82,7 @@ if (isset($_SESSION["user_id"])) {
                 </div>
                 <div class="row">
                     <?php
+
                     $res = $db->get_entities('book');
                     while ($row = mysqli_fetch_array($res)) {
                     ?>
@@ -92,7 +95,7 @@ if (isset($_SESSION["user_id"])) {
                                     <h1 class="title"><?php echo substr($row['title'], 0, 13);
                                                         if (strlen($row["title"]) > 13) {
                                                             echo "...";
-                                                        } 
+                                                        }
                                                         ?> </h1>
                                     <h2 class="author"><?= $row['author'] ?></h2>
                                     <p><?= substr($row['description'], 0, 125) ?>...</p>

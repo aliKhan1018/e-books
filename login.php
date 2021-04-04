@@ -19,7 +19,7 @@ if (isset($_POST["login"])) {
         header("location: index.php");
         die();
     } else {
-        echo Utility::alert("not login");
+        // echo Utility::alert("not login");
     }
 }
 ?>
@@ -80,7 +80,20 @@ if (isset($_POST["login"])) {
             </table>
         </form>
     </section>
+    
     <?php include "./footer.php"; ?>
+    <script src="assets/bundles/lib.vendor.bundle.js"></script>
+    <script src="js/CodiePie.js"></script>
+
+    <!-- JS Libraies -->
+    <script src="assets/modules/prism/prism.js"></script>
+
+    <!-- Page Specific JS File -->
+    <script src="js/page/bootstrap-modal.js"></script>
+
+    <!-- Template JS File -->
+    <script src="js/scripts.js"></script>
+    <script src="js/custom.js"></script>
 </body>
 
 </html>

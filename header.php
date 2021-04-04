@@ -1,7 +1,7 @@
 <?php
-    if(isset($_SESSION["user_id"])){
-        $u = $db->get_entity('user', $_SESSION["user_id"]);
-    }
+if (isset($_SESSION["user_id"])) {
+    $u = $db->get_entity('user', $_SESSION["user_id"]);
+}
 ?>
 <div class="wrap">
     <header id="header">
@@ -24,7 +24,7 @@
                                     $c = $db->get_entities('category');
                                     while ($cat = mysqli_fetch_array($c)) {
                                     ?>
-                                        <li><a href="#"><?= $cat["name"] ?></a>
+                                        <li><a href="books-<?=strtolower($cat["name"])?>.php?category_id=<?=$cat["id"]?>"><?= $cat["name"] ?></a>
                                             <?php
                                             $q = "SELECT * FROM subcategory WHERE category_id = " . $cat['id'];
                                             $sc = $db->query($q);
@@ -93,22 +93,37 @@
                                                         <div class="imgbox-sm"><img src="./img/uploaded/<?= $book["image"] ?>" alt=""></div>
                                                     </td>
                                                     <td>
-                                                        <p><?=$value["qty"]?></p>
-                                                        <!-- <input type="number" min="0" value="<?=$value["qty"];?>" name="quantity" id=""> -->
+                                                        <p><?= $value["qty"] ?></p>
+                                                        <!-- <input type="number" min="0" value="<?= $value["qty"]; ?>" name="quantity" id=""> -->
                                                     </td>
                                                     <td>$<?= $book["price"] ?></td>
                                                 </tr>
-                                        <?php
+                                            <?php
                                             }
-                                        }
-                                        ?>
-                                        <tr>
-                                            <td></td>
-                                            <td></td>
-                                            <td class="cart-total" style="padding: 20px;"><b>Total: $<?=$total_price?></b></td>
-                                        </tr>
+                                            ?>
+                                            <tr>
+                                                <td></td>
+                                                <td></td>
+                                                <?php
+                                                if (isset($_SESSION['cart'])) {
+                                                ?>
+                                                    <td style="padding: 20px;"><b>Total: $<?= $total_price ?></b></td>
+                                            <?php
+                                                }
+                                            }
+
+                                            ?>
+
+                                            </tr>
+                                            <tr>
+                                                <td colspan="3">
+                                                    <div class="btn-checkout">
+                                                        <a href="#" class=""><b>Proceed to Checkout</b></a>
+                                                    </div>
+                                                </td>
+                                            </tr>
                                     </table>
-                                    <a href="#" class="btn-checkout"><b>Proceed to Checkout</b></a>
+
                                 </ul>
                             </li>
                         <?php
