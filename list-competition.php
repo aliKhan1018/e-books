@@ -5,8 +5,6 @@ session_start();
 <!DOCTYPE html>
 <html lang="en">
 
-<!-- components-table.html  Tue, 07 Jan 2020 03:37:12 GMT -->
-
 <head>
     <?php include "./admin-head.php"; ?>
 </head>
@@ -26,42 +24,56 @@ session_start();
             <div class="main-content">
                 <section class="section">
                     <div class="section-header">
-                        <h1>Genre List</h1>
+                        <h1>Competition List</h1>
                         <div class="section-header-breadcrumb">
                             <div class="breadcrumb-item active"><a href="admin-index.php">Dashboard</a></div>
-                            <div class="breadcrumb-item">Genre List</div>
+                            <div class="breadcrumb-item">Competition List</div>
                         </div>
                     </div>
 
                     <div class="section-body">
-                        <h2 class="section-title">Genre</h2>
-                        <p class="section-lead">Here are all the registered Genre.</p>
+                        <h2 class="section-title">Competition</h2>
 
                         <div class="row">
                             <div class="col-12 col-md-12 col-lg-12">
                                 <div class="card">
                                     <div class="card-header">
-                                        <h4>Genre</h4>
+                                        <h4>Competition</h4>
                                     </div>
                                     <div class="card-body p-0">
                                         <div class="table-responsive">
                                             <table class="table table-striped table-md v_center">
                                                 <tr>
                                                     <th>ID</th>
-                                                    <th>Name</th>
-                                                    <th>Action</th>
+                                                    <th>Topic</th>
+                                                    <th>Prize</th>
+                                                    <th>Start Time</th>
+                                                    <th>End Time</th>
                                                 </tr>
                                                 <?php
-                                                $res = $db->get_entities('Genre');
+                                                $res = $db->get_entities('competition');
                                                 while ($row = mysqli_fetch_array($res)) {
                                                 ?>
                                                     <tr>
                                                         <td><?= $row["id"] ?></td>
-                                                        <td><?= $row["name"] ?></td>
-                                                        <td><a href="details-genre.php?id=<?=$row["id"]?>" class="btn btn-secondary">Detail</a> / <a href="delete-confirm-genre.php?id=<?=$row["id"]?>" class="btn btn-danger">Delete</a></td>
+                                                        <td>
+                                                           <?= $row["topic"] ?>
+                                                        </td>
+                                                        <td>
+                                                            <?= $row["prize"] ?> 
+                                                        </td>
+                                                        <td>
+                                                            <?= $row["start_time"] ?>
+                                                        </td>
+                                                        <td>
+                                                            <?= $row["end_time"] ?>
+                                                        </td>
+                                                        <td>
+                                                        <a href="details-competition.php?id=<?= $row["id"] ?>" class="btn btn-primary">Edit</a> /
+                                                        <a href="details-competition.php?id=<?= $row["id"] ?>" class="btn btn-secondary">Detail</a> / <a href="delete-confirm-competition.php?id=<?= $row["id"] ?>" class="btn btn-danger">Delete</a></td>
                                                     </tr>
                                                     <?php } if($res->num_rows == 0){
-                                                    echo "<tr><td colspan='7'><div class='alert alert-danger'>No genre found!</div></td></tr>";
+                                                    echo "<tr><td colspan='7'><div class='alert alert-danger'>No book_genre found!</div></td></tr>";
                                                 }?>
 
                                             </table>

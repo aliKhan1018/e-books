@@ -31,11 +31,15 @@
 
         function query($q){
             $res = mysqli_query($this->link, $q);
+            $out = "";
             if ($res) {
-                echo Utility::console_log("Query Executed Sucessfully ✅");
+                $out = "Query Executed Sucessfully ✅ query: $q";
+                echo Utility::console_log($out);
             } else {
-                echo Utility::console_error("Query Error ❌: " . mysqli_errno($this->get_link()));
+                $out = "Query Error ❌: " . mysqli_errno($this->get_link()) . " on query: $q";
+                echo Utility::console_error($out);
             }
+            Utility::log($out);
             return $res;
         }
 
@@ -52,25 +56,26 @@
 
         
         public function update_entity($table_name, $col_name, $new_value, $id){
-            $q = "UPDATE $table_name SET $col_name = '$new_value' WHERE ID = $id";
+            $q = "UPDATE $table_name SET $col_name = $new_value WHERE id = " . $id;
             $res = $this->query($q);
+            return $res;
         }
 
 
         public function get_entity($table_name, $id){
-            $q = "SELECT * FROM $table_name WHERE ID = " . $id; 
+            $q = "SELECT * FROM `$table_name` WHERE ID = " . $id; 
             $res = $this->query($q);
             return $res->fetch_assoc();
         }
 
         public function get_entities($table_name){
-            $q = "SELECT * FROM $table_name"; 
+            $q = "SELECT * FROM `$table_name`"; 
             $res = $this->query($q);
             return $res;
         }
 
         public function login_user($email, $pswd){
-            $q = "select * from user where email='$email' and password='$pswd'";
+            $q = "SELECT * FROM user WHERE email='$email' AND password='$pswd'";
             $res = $this->query($q);
             $data = $res->fetch_assoc();
             $id = $data["id"];
@@ -78,7 +83,7 @@
         }
 
         public function user_exists($email){
-            $q = "select * from user where email='$email'";
+            $q = "SELECT * FROM user WHERE email='$email'";
             $res = $this->query($q);
             $data = $res->fetch_assoc();
             $id = $data["id"];

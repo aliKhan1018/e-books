@@ -925,7 +925,7 @@ textarea.form-control {
 
 .card.card-hero .card-header {
     padding: 40px;
-    background-image: linear-gradient(to bottom, #563d7c, #6e4e9e);
+    background-image: linear-gradient(to bottom, #e9b544, #fcb929);
     color: #fff;
     overflow: hidden;
     height: auto;
@@ -1008,6 +1008,9 @@ textarea.form-control {
     line-height: 50px;
     font-size: 22px;
     margin: 25px;
+    display:flex;
+    justify-content: center;
+    align-items: center;
 }
 
 .card.card-statistic-1 .card-header, .card.card-statistic-2 .card-header {

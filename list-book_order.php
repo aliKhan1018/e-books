@@ -48,7 +48,9 @@ session_start();
                                                 <tr>
                                                     <th>ID</th>
                                                     <th>Book Name</th>
-                                                    <th>Order Name</th>
+                                                    <th>Order ID</th>
+                                                    <th>Quantity</th>
+                                                    <th>Action</th>
                                                 </tr>
                                                 <?php
                                                 $res = $db->get_entities('book_order');
@@ -60,15 +62,14 @@ session_start();
                                                             <?php
                                                             $_book_id = $row["book_id"];
                                                             $book = $db->get_entity('book', $_book_id);
-                                                            echo $book["title"]
+                                                            echo $book["title"];
                                                             ?>
                                                         </td>
                                                         <td>
-                                                            <?php
-                                                            $_genre_id = $row["order_id"];
-                                                            $genre = $db->get_entity('order', $_book_id);
-                                                            echo $genre["name"]
-                                                            ?>
+                                                            <?= $row["order_id"] ?>
+                                                        </td>
+                                                        <td>
+                                                            <?= $row["quantity"] ?>
                                                         </td>
                                                         <td><a href="details-book-order.php?id=<?= $row["id"] ?>" class="btn btn-secondary">Detail</a> / <a href="delete-confirm-book-order.php?id=<?= $row["id"] ?>" class="btn btn-danger">Delete</a></td>
                                                     </tr>

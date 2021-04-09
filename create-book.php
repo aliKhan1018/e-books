@@ -13,6 +13,7 @@ if (isset($_POST["add"])) {
     $price =     $_POST["price"];
     $stock =     $_POST["stock"];
     $category =  $_POST["category"];
+    $subcat =    $_POST["subcategory"];
     $weight =    $_POST["weight"];
 
     $img = $_FILES["image"]["name"];
@@ -24,7 +25,7 @@ if (isset($_POST["add"])) {
     move_uploaded_file($_FILES["pdf"]["tmp_name"], $pdf_path);
 
     // query
-    $q = "INSERT INTO book (title, author, description, publishedon, publisher, price, stock, category_id, weight, image, pdf) VALUES ('$title', '$author', '$desc', '$pubon','$publisher', $price, $stock, $category, '$weight', '$img', '$pdf') ";
+    $q = "INSERT INTO book (title, author, description, publishedon, publisher, price, stock, category_id, subcategory_id, weight, image, pdf) VALUES ('$title', '$author', '$desc', '$pubon','$publisher', $price, $stock, $category, $subcat,'$weight', '$img', '$pdf') ";
 
     $res = $db->query($q);
     if ($res) {
@@ -158,28 +159,38 @@ if (isset($_POST["add"])) {
                                                 <input type="number" name="stock" class="form-control" value="0" min="0">
                                             </div>
                                         </div>
-                                        <div class="form-group">
-                                            <label>Category</label>
-                                            <select name="category" class="form-control select1">
-                                                <option value="">Select Category...</option>
-                                                <?php
-                                                $res = $db->get_entities('category');
 
-                                                while ($row = mysqli_fetch_array($res)) {
-                                                ?>
-                                                    <option value="<?= $row["id"] ?>"><?= $row["name"] ?></option>
-                                                <?php } ?>
-                                            </select>
+                                        <div class="row">
+                                            <div class="col-sm-12 col-md-6 form-group">
+                                                <label for="sel1">Category</label>
+                                                <select class="form-control" id="category" required>
+                                                    <option value="">Select Category</option>
+                                                    <?php
+                                                    $res = $db->get_entities('category');
+                                            
+                                                    while ($row = mysqli_fetch_array($res)) {
+                                                    ?>
+                                                        <option value="<?= $row["id"]; ?>"><?= $row["name"]; ?></option>
+                                                    <?php
+                                                    }
+                                                    ?>
+                                            
+                                                </select>
+                                            </div>
+                                            <div class="col-sm-12 col-md-6 form-group">
+                                                <label for="sel1">Sub Category</label>
+                                                <select class="form-control" id="sub_category" name="subcategory" required>
+                                                    <option value="">Select a category</option>
+                                                </select>
+                                            </div>
+                                            
                                         </div>
                                         <div class="form-group">
                                             <label>Genre(s)</label>
                                             <select class="form-control select2" multiple="">
-                                                <option>Option 1</option>
-                                                <option>Option 2</option>
-                                                <option>Option 3</option>
-                                                <option>Option 4</option>
-                                                <option>Option 5</option>
-                                                <option>Option 6</option>
+                                                <?php
+
+                                                ?>
                                             </select>
                                         </div>
                                         <div class="form-group">
@@ -240,6 +251,26 @@ if (isset($_POST["add"])) {
             var image = document.getElementById('output');
             image.src = URL.createObjectURL(event.target.files[0]);
         };
+    </script>
+    <script>
+        $(document).ready(function() {
+            $('#category').on('change', function() {
+                var category_id = this.value;
+                $.ajax({
+                    url: "get_subcat.php",
+                    type: "POST",
+                    data: {
+                        category_id: category_id
+                    },
+                    cache: false,
+                    success: function(dataResult) {
+                        $("#sub_category").html(dataResult);
+                    }
+                });
+
+
+            });
+        });
     </script>
 </body>
 

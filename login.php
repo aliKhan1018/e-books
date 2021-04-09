@@ -58,7 +58,7 @@ if (isset($_POST["login"])) {
                         <label for="">Password: </label>
                     </td>
                     <td>
-                        <input type="password" name="pswd" placeholder="Enter your password" id="" required pattern="[0-9a-zA-Z1@#$%^&]{8, 255}">
+                        <input type="password" name="pswd" placeholder="Enter your password" id="" required>
                     </td>
                 </tr>
                 <tr>

@@ -24,7 +24,7 @@ if (isset($_SESSION["user_id"])) {
                                     $c = $db->get_entities('category');
                                     while ($cat = mysqli_fetch_array($c)) {
                                     ?>
-                                        <li><a href="books-<?=strtolower($cat["name"])?>.php?category_id=<?=$cat["id"]?>"><?= $cat["name"] ?></a>
+                                        <li><a href="books-<?= strtolower($cat["name"]) ?>.php?category_id=<?= $cat["id"] ?>"><?= $cat["name"] ?></a>
                                             <?php
                                             $q = "SELECT * FROM subcategory WHERE category_id = " . $cat['id'];
                                             $sc = $db->query($q);
@@ -60,6 +60,8 @@ if (isset($_SESSION["user_id"])) {
                             <li>Hi, <?= $u["name"] ?>
                                 <ul class="sub-menu">
                                     <li><a href="auth-user.php">Profile</a></li>
+                                    <li><a href="my-books.php">My Books</a></li>
+                                    <li><a href="my-orders.php">My Orders</a></li>
                                     <li><a href="logout.php">Logout</a></li>
                                 </ul>
                             </li>
@@ -93,7 +95,7 @@ if (isset($_SESSION["user_id"])) {
                                                         <div class="imgbox-sm"><img src="./img/uploaded/<?= $book["image"] ?>" alt=""></div>
                                                     </td>
                                                     <td>
-                                                        <p><?= $value["qty"] ?></p>
+                                                        <?= $value["qty"] ?>
                                                         <!-- <input type="number" min="0" value="<?= $value["qty"]; ?>" name="quantity" id=""> -->
                                                     </td>
                                                     <td>$<?= $book["price"] ?></td>
@@ -117,9 +119,13 @@ if (isset($_SESSION["user_id"])) {
                                             </tr>
                                             <tr>
                                                 <td colspan="3">
-                                                    <div class="btn-checkout">
-                                                        <a href="#" class=""><b>Proceed to Checkout</b></a>
-                                                    </div>
+                                                    <?php
+                                                    if (isset($_SESSION["cart"])) {
+                                                    ?>
+                                                        <div class="btn-checkout">
+                                                            <a href="#" class=""><b>Proceed to Checkout</b></a>
+                                                        </div>
+                                                    <?php } ?>
                                                 </td>
                                             </tr>
                                     </table>

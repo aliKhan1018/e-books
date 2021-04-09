@@ -58,19 +58,19 @@ if (isset($_POST["reg"])) {
                         <td>
                             <label for="">Name: </label>
                         </td>
-                        <td><input type="text" name="name" id="" placeholder="Enter your name"></td>
+                        <td><input type="text" name="name" id="" placeholder="Enter your name" required></td>
                     </tr>
                     <tr>
                         <td>
                             <label for="">Email: </label>
                         </td>
-                        <td><input type="email" name="email" placeholder="Enter your email" id=""></td>
+                        <td><input type="email" name="email" placeholder="Enter your email" id="" required></td>
                     </tr>
                     <tr>
                         <td>
                             <label for="">Password: </label>
                         </td>
-                        <td><input type="password" name="pswd" placeholder="Enter your password" pattern="[0-9a-zA-Z1@#$%^&]{8, 255}" id=""></td>
+                        <td><input type="password" name="pswd" placeholder="Enter your password"  pattern="[0-9a-zA-Z!@#$%^&]{8, 255}" title="Please follow the requested format"></td>
                     </tr>
                     <tr>
                         <td>
@@ -88,7 +88,7 @@ if (isset($_POST["reg"])) {
                         <td>
                             <label for="">Preferred Credit Card # <small>(optional)</small>: </label>
                         </td>
-                        <td><input type="text" name="cc" id="" placeholder="Enter your credit card #" pattern="[0-9]{16}" title="credit card must exactly be 16 digits long" required></td>
+                        <td><input type="text" name="cc" id="" placeholder="Enter your credit card #" pattern="[0-9]{16}" title="credit card must exactly be 16 digits long" ></td>
                     </tr>
                     <tr>
                         <td>
@@ -96,7 +96,7 @@ if (isset($_POST["reg"])) {
                         </td>
                         <td>
                             <select name="gender" id="">
-                                <option value="Not specified">Select Gender...</option>
+                                <option value="">Select Gender...</option>
                                 <option value="Male">Male</option>
                                 <option value="Female">Female</option>
                                 <option value="Others">Others</option>

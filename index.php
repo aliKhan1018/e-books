@@ -10,6 +10,11 @@ if (isset($_SESSION["user_id"])) {
     }
 }
 
+$date = Utility::get_date_formatted();
+$q = "SELECT * FROM competition WHERE start_time > $date";
+$upcoming_competitions = $db->query($q);
+
+
 ?>
 
 <!DOCTYPE html>
@@ -42,7 +47,38 @@ if (isset($_SESSION["user_id"])) {
         </div>
     </section>
 
+    <section class="our-services" id="about">
+        <div class="container">
+            <div class="row">
+                <div class="col-md-7">
+                    <div class="left-content">
+                        <br>
+                        <h4 class="heading">Competitions</h4>
+
+                        <br>
+                    </div>
+                </div>
+                <div class="col-md-5">
+                    <h2>Upcoming</h2>
+                    <?php
+                    if ($upcoming_competitions) {
+                        while ($row = mysqli_fetch_array($upcoming_competitions)) {
+                    ?>
+                        <p><?=$row["topic"]?></p>
+                        <p><?=$row["start_time"]?> - <?=$row["end_time"]?></p>
+                    <?php
+                        }
+                    }
+                    ?>
+                </div>
+            </div>
+        </div>
+    </section>
+
     <main>
+
+
+
         <section class="our-services" id="about">
             <div class="container">
                 <div class="row">
@@ -76,7 +112,7 @@ if (isset($_SESSION["user_id"])) {
                         <div class="section-heading">
                             <span>New Releases</span>
                             <h2>GET 'EM NOW!</h2>
-                            <!-- TODO add logic to show only 3 top selling products -->
+                            <!-- TODO add logic to show only 3 latest releases products -->
                         </div>
                     </div>
                 </div>
@@ -110,99 +146,6 @@ if (isset($_SESSION["user_id"])) {
             </div>
         </section>
 
-
-        <!-- <section class="featured-places">
-            <div class="container">
-                <div class="row">
-                    <div class="col-md-12">
-                        <div class="section-heading">
-                            <span>Latest blog posts</span>
-                            <h2>Lorem ipsum dolor sit amet ctetur.</h2>
-                        </div>
-                    </div>
-                </div>
-                <div class="row">
-                    <div class="col-md-4 col-sm-6 col-xs-12">
-                        <div class="featured-item">
-                            <div class="thumb">
-                                <div class="thumb-img">
-                                    <img src="img/blog-1-720x480.jpg" alt="">
-                                </div>
-
-                                <div class="overlay-content">
-                                    <strong title="Author"><i class="fa fa-user"></i> John Doe</strong> &nbsp;&nbsp;&nbsp;&nbsp;
-                                    <strong title="Posted on"><i class="fa fa-calendar"></i> 12/06/2020 10:30</strong> &nbsp;&nbsp;&nbsp;&nbsp;
-                                    <strong title="Views"><i class="fa fa-map-marker"></i> 115</strong>
-                                </div>
-                            </div>
-
-                            <div class="down-content">
-                                <h4>Lorem ipsum dolor sit amet, consectetur adipisicing elit hic</h4>
-
-                                <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Enim consectetur assumenda nam facere voluptatibus totam veritatis. </p>
-
-                                <div class="text-button">
-                                    <a href="blog-details.html">Read More</a>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-
-                    <div class="col-md-4 col-sm-6 col-xs-12">
-                        <div class="featured-item">
-                            <div class="thumb">
-                                <div class="thumb-img">
-                                    <img src="img/blog-2-720x480.jpg" alt="">
-                                </div>
-
-                                <div class="overlay-content">
-                                    <strong title="Author"><i class="fa fa-user"></i> John Doe</strong> &nbsp;&nbsp;&nbsp;&nbsp;
-                                    <strong title="Posted on"><i class="fa fa-calendar"></i> 12/06/2020 10:30</strong> &nbsp;&nbsp;&nbsp;&nbsp;
-                                    <strong title="Views"><i class="fa fa-map-marker"></i> 115</strong>
-                                </div>
-                            </div>
-
-                            <div class="down-content">
-                                <h4>Lorem ipsum dolor sit amet, consectetur adipisicing elit hic</h4>
-
-                                <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Enim consectetur assumenda nam facere voluptatibus totam veritatis. </p>
-
-                                <div class="text-button">
-                                    <a href="blog-details.html">Read More</a>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-
-                    <div class="col-md-4 col-sm-6 col-xs-12">
-                        <div class="featured-item">
-                            <div class="thumb">
-                                <div class="thumb-img">
-                                    <img src="img/blog-3-720x480.jpg" alt="">
-                                </div>
-
-                                <div class="overlay-content">
-                                    <strong title="Author"><i class="fa fa-user"></i> John Doe</strong> &nbsp;&nbsp;&nbsp;&nbsp;
-                                    <strong title="Posted on"><i class="fa fa-calendar"></i> 12/06/2020 10:30</strong> &nbsp;&nbsp;&nbsp;&nbsp;
-                                    <strong title="Views"><i class="fa fa-map-marker"></i> 115</strong>
-                                </div>
-                            </div>
-
-                            <div class="down-content">
-                                <h4>Lorem ipsum dolor sit amet, consectetur adipisicing elit hic</h4>
-
-                                <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Enim consectetur assumenda nam facere voluptatibus totam veritatis. </p>
-
-                                <div class="text-button">
-                                    <a href="blog-details.html">Read More</a>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </section> -->
-
         <section id="video-container">
             <div class="video-overlay"></div>
             <div class="video-content">
@@ -213,7 +156,7 @@ if (isset($_SESSION["user_id"])) {
                     </div>
 
                     <div class="blue-button">
-                        <a href="contact.html">Give us your feedback</a>
+                        <a href="contact.php">Give us your feedback</a>
                     </div>
                 </div>
             </div>

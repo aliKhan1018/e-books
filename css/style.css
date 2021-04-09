@@ -26,7 +26,7 @@
   width: 250px;
   min-height: 100px;
   max-height: 300px;
-  background: #eee;
+  background: var(--theme-color-3);
   position: absolute;
   z-index: 999;
   display: none;
@@ -34,7 +34,8 @@
   border-bottom-right-radius: 10px;
   overflow-y: scroll;
   overflow-x: hidden;
-  background: #fff;
+  /* background: #fff; */
+  box-shadow: 0px 0px 20px 0px rgba(128, 128, 128, 0.5);
 }
 
 .dropdown li:hover > .cart-dropdown {
@@ -71,12 +72,15 @@
 
 .cart-dropdown .cart-table{
   width: 100%;
-  position: relative;
+  position: relative; 
+  /* color: var(--theme-font-color-light); */
+
 }
 .cart-dropdown .cart-table th, .cart-dropdown .cart-table td{
   padding: 10px;
   font-size: 1.3rem;
   width: 80px;
+  color: var(--theme-font-color-light);
   text-align: center;
 }
 .cart-table input[type=number]{

@@ -53,7 +53,13 @@ if (isset($_POST['rem'])) {
                                                   <td>
                                                        <div class="book-img"><img width="100px" height="150px" src="./img/uploaded/<?= $book["image"] ?>" alt=""></div>
                                                   </td>
-                                                  <td><input type="number" name="quantity" value="<?= $value['qty'] ?>" min="0" max="<?= $book['stock'] ?>" id="qty" onchange="updatePrice(<?= $book['price'] ?>)"></td>
+                                                  <td>
+                                                       <?php
+                                                       if ($value["ver"] == "phy") {
+                                                       ?>
+                                                            <input type="number" name="quantity" value="<?= $value['qty'] ?>" min="0" max="<?= $book['stock'] ?>" id="qty" onchange="updatePrice(<?= $book['price'] ?>)">
+                                                       <?php } ?>     
+                                                  </td>
                                                   <td>$<span id="price"><?= $book["price"] ?></span></td>
                                                   <td><button type="submit" class="btn btn-danger" name="rem" value="<?= $key ?>">Remove Book</button></td>
                                              </tr>
@@ -63,7 +69,7 @@ if (isset($_POST['rem'])) {
                                         <tr>
                                              <td colspan="4">
                                                   <div class="alert alert-danger">
-                                                       <p><b>Cart Empty!</b></p>
+                                                       <p><b>Cart Empty! <a href="./books.php">Want books?</a></b></p>
                                                   </div>
                                              </td>
                                         </tr>
@@ -72,11 +78,21 @@ if (isset($_POST['rem'])) {
                                    ?>
                                    <tr>
                                         <td colspan="3"></td>
-                                        <td><p>Total Price: $<?=$total_price?></p></td>
+                                        <td style="float:right">
+                                             <p>Total Price: $ <?php echo isset($total_price) ? $total_price : 0 ?></p>
+                                        </td>
                                    </tr>
                                    <tr>
                                         <td colspan="3"></td>
-                                        <td><a href="./checkout.php">Checkout</a></td>
+                                        <td>
+                                             <?php
+                                             if (isset($_SESSION['cart'])) {
+                                             ?>
+                                                  <a style="float:right" href="./checkout.php">Checkout</a>
+                                             <?php
+                                             }
+                                             ?>
+                                        </td>
                                    </tr>
                               </tbody>
                          </table>

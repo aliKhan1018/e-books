@@ -16,15 +16,16 @@ if (isset($_POST["edit"])) {
     $price = $_POST["price"];
     $stock = $_POST["stock"];
     $category = $_POST["category"];
+    $subcat = $_POST["subcategory"];
 
     $img = $_FILES["image"]["name"];
-    if($img != $book["image"]){
+    if ($img != $book["image"]) {
         $path = "./img/uploaded/" . $img;
         move_uploaded_file($_FILES["image"]["tmp_name"], $path);
         $db->update_entity('book', 'image', $img, $url_id);
     }
     $pdf = $_FILES["pdf"]["name"];
-    if($pdf != $book["pdf"]){
+    if ($pdf != $book["pdf"]) {
         $path = "./pdf/" . $pdf;
         move_uploaded_file($_FILES["pdf"]["tmp_name"], $path);
         $db->update_entity('book', 'pdf', $pdf, $url_id);
@@ -37,7 +38,8 @@ if (isset($_POST["edit"])) {
     $db->update_entity('book', 'publisher', $publisher, $url_id);
     $db->update_entity('book', 'price', $price, $url_id);
     $db->update_entity('book', 'stock', $stock, $url_id);
-    $db->update_entity('book', 'category', $category, $url_id);
+    $db->update_entity('book', 'category_id', $category, $url_id);
+    $db->update_entity('book', 'subcategory_id', $subcategory, $url_id);
 
     echo Utility::alert("Changes Saved!");
 }
@@ -73,10 +75,10 @@ if (isset($_POST["edit"])) {
                     <div class="section-body">
                         <div class="col-12 col-md-12 col-lg-12">
                             <div class="card">
-                                <?php if(isset($res)){
-                                    ?>
+                                <?php if (isset($res)) {
+                                ?>
                                     <div class='alert alert-success'><b>Book Edited Successfully!</b></div>
-                                    <?php }?>
+                                <?php } ?>
 
                                 <div class="card-header">
                                     <h4>Enter book details</h4>
@@ -91,7 +93,7 @@ if (isset($_POST["edit"])) {
                                                         <i class="fa fa-book"></i>
                                                     </div>
                                                 </div>
-                                                <input type="text" name="title" value="<?=$book["title"]?>" class="form-control">
+                                                <input type="text" name="title" value="<?= $book["title"] ?>" class="form-control">
                                             </div>
                                         </div>
                                         <div class="form-group">
@@ -102,7 +104,7 @@ if (isset($_POST["edit"])) {
                                                         <i class="fa fa-user"></i>
                                                     </div>
                                                 </div>
-                                                <input type="text" name="author" value="<?=$book["author"]?>" class="form-control">
+                                                <input type="text" name="author" value="<?= $book["author"] ?>" class="form-control">
                                             </div>
                                         </div>
                                         <div class="form-group">
@@ -113,13 +115,13 @@ if (isset($_POST["edit"])) {
                                                         <i class="fa fa-home"></i>
                                                     </div>
                                                 </div>
-                                                <input type="text" name="publisher" value="<?=$book["publisher"]?>" class="form-control">
+                                                <input type="text" name="publisher" value="<?= $book["publisher"] ?>" class="form-control">
                                             </div>
                                         </div>
                                         <div class="form-group">
                                             <label>Description</label>
                                             <div class="input-group">
-                                                <textarea name="desc" id="" class="form-control"  cols="30" rows="10"><?=$book["description"]?></textarea>
+                                                <textarea name="desc" id="" class="form-control" cols="30" rows="10"><?= $book["description"] ?></textarea>
                                             </div>
                                         </div>
                                         <div class="form-group">
@@ -130,7 +132,7 @@ if (isset($_POST["edit"])) {
                                                         <i class="fa fa-dollar"></i>
                                                     </div>
                                                 </div>
-                                                <input type="text" name="price" value="<?=$book['price']?>" class="form-control currency">
+                                                <input type="text" name="price" value="<?= $book['price'] ?>" class="form-control currency">
                                             </div>
                                         </div>
                                         <div class="form-group">
@@ -141,7 +143,7 @@ if (isset($_POST["edit"])) {
                                                         <i class="fa fa-calendar"></i>
                                                     </div>
                                                 </div>
-                                                <input type="date" name="pubon" class="form-control" value="<?=$book['publishedon']?>" max="<?=Utility::get_date_formatted();?>">
+                                                <input type="date" name="pubon" class="form-control" value="<?= $book['publishedon'] ?>" max="<?= Utility::get_date_formatted(); ?>">
                                             </div>
                                         </div>
                                         <div class="form-group">
@@ -152,7 +154,7 @@ if (isset($_POST["edit"])) {
                                                         <i class="fa fa-check"></i>
                                                     </div>
                                                 </div>
-                                                <input type="number" name="stock" class="form-control" value="<?=$book['stock']?>" min="0">
+                                                <input type="number" name="stock" class="form-control" value="<?= $book['stock'] ?>" min="0">
                                             </div>
                                         </div>
                                         <div class="form-group">
@@ -161,11 +163,17 @@ if (isset($_POST["edit"])) {
                                                 <option value="">Select Category...</option>
                                                 <?php
                                                 $res = $db->get_entities('category');
-                                    
+
                                                 while ($row = mysqli_fetch_array($res)) {
                                                 ?>
                                                     <option value="<?= $row["id"] ?>"><?= $row["name"] ?></option>
                                                 <?php } ?>
+                                            </select>
+                                        </div>
+                                        <div class="form-group">
+                                            <label for="sel1">Sub Category</label>
+                                            <select class="form-control" id="sub_category" name="subcategory">
+
                                             </select>
                                         </div>
                                         <div class="form-group">
@@ -181,14 +189,29 @@ if (isset($_POST["edit"])) {
                                         </div>
                                         <div class="form-group">
                                             <label>Image</label>
-                                            <div class="imgbox"><img src="./img/uploaded/<?=$book['image']?>" id="output" alt="Upload an image!"></div>
-                                            <input type="file" class="form-control" name="image" accept="image/*" id="file" onchange="loadFile(event)">
+                                            <div class="imgbox"><img src="./img/uploaded/<?= $book['image'] ?>" id="output" alt="Upload an image!" ></div>
+                                            <input
+                                                type="file" 
+                                                class="form-control" 
+                                                name="image" 
+                                                accept="image/*" 
+                                                id="file" 
+                                                onchange="loadFile(event)" 
+                                                required
+                                            />
                                         </div>
 
                                         <div class="form-group">
                                             <label>PDF File</label>
                                             <div class="imgbox"><img src="" id="output" alt="Upload an image!"></div>
-                                            <input type="file" value="<?=$book['pdf']?>" class="form-control" name="pdf" accept="" id="">
+                                            <input 
+                                                type="file" 
+                                                value="<?= $book['pdf'] ?>" 
+                                                class="form-control" 
+                                                name="pdf" 
+                                                accept="application/pdf" 
+                                                required
+                                            />
                                         </div>
                                         <div class="form-group">
                                             <input type="submit" value="Save Changes" name="edit" class="btn btn-secondary" style="float: right;">
@@ -239,6 +262,27 @@ if (isset($_POST["edit"])) {
             var image = document.getElementById('output');
             image.src = URL.createObjectURL(event.target.files[0]);
         };
+    </script>
+    <!-- <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script> -->
+    <script>
+        $(document).ready(function() {
+            $('#category').on('change', function() {
+                var category_id = this.value;
+                $.ajax({
+                    url: "get_subcat.php",
+                    type: "POST",
+                    data: {
+                        category_id: category_id
+                    },
+                    cache: false,
+                    success: function(dataResult) {
+                        $("#sub_category").html(dataResult);
+                    }
+                });
+
+
+            });
+        });
     </script>
 </body>
 
