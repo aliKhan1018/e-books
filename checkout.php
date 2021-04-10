@@ -26,7 +26,7 @@ if (isset($_POST["confirm"])) {
 
      // TODO order status based on version being either physical or digital.
      $date = Utility::get_date_formatted();
-     $q = "INSERT INTO `order` (`user_id`, `payment`, `zip`, `status`, `order_number`, `cost`, `orderedon`) VALUES ($u_id, '$pay', '$zip', '$status', '$generated_order_number', $grand_total, '$date');";
+     $q = "INSERT INTO `order` (`user_id`, `payment`, `zip`, `order_number`, `cost`, `orderedon`) VALUES ($u_id, '$pay', '$zip', '$generated_order_number', $grand_total, '$date');";
      $res = $db->query($q);
 
      // if the book has been inserted sucessfully..
@@ -39,9 +39,33 @@ if (isset($_POST["confirm"])) {
                $book = $db->get_entity('book', $key);
                $book_qty = $value['qty'];
                $version = $value["ver"];
-               $q = "INSERT INTO `book_order` (`order_id`, `book_id`, `quantity`, `version`) VALUES  ($order_id, $key, $book_qty, '$version');";
+               $status = "";
+
+               if ($version == 'pdf'){
+                    $status = "completed";
+               }
+               else if ($version == "phy"){
+                    $status = "pending";
+               }
+               
+               $q = "INSERT INTO `book_order` (`order_id`, `book_id`, `quantity`, `version`, `status`) VALUES  ($order_id, $key, $book_qty, '$version', '$status');";
                $res = $db->query($q);
           }
+
+          $q = "SELECT * from book_order where order_id = $order_id";
+          $res = $db->query($q);
+
+          $found = false;
+          while($bo = mysqli_fetch_array($res)){
+               if($bo["version"] == 'phy'){
+                    $found = true;
+               }
+          }
+
+          $order_status = $found ? "pending" : "completed";
+          $db->update_entity('order', 'status', $order_status, $order_id);
+     
+          // unset the cart variable in stored in session.
           unset($_SESSION["cart"]);
 
           // generate one-time pass code.
@@ -53,11 +77,11 @@ if (isset($_POST["confirm"])) {
           } while ($res === TRUE);
 
 
-          $q = "INSERT INTO otp (`user_id`, `otp`) VALUES ($u_id, '$otp')";
+          $q = "INSERT INTO otp (`otp`, `order_id`) VALUES ('$otp', $order_id)";
           $res = $db->query($q);
 
 
-          // Utility::redirect_to("order.php?id=".$order_id);
+          Utility::redirect_to("order.php?id=".$order_id);
      } else {
           echo Utility::alert('Order not processed!');
      }

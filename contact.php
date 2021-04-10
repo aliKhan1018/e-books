@@ -13,7 +13,7 @@ if (isset($_POST["add"])) {
   $email = $_POST["email"];
   $message = $_POST["message"];
 
-  $q = "INSERT INTO `contact` (`user_id`, `subject`, `email`, `message`) VALUES($user_id, '$subject', '$email', '$message')";
+  $q = "INSERT INTO `contact` (`user_id`, `subject`, `email`, `message`, `resolved`) VALUES ($user_id, '$subject', '$email', '$message', 0)";
   $res = $db->query($q);
 }
 ?>

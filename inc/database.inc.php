@@ -49,14 +49,14 @@
         }
 
         public function delete_entity($table_name, $id){
-            $q = "DELETE FROM $table_name WHERE id = $id";
+            $q = "DELETE FROM `$table_name` WHERE id = $id";
             $res = $this->query($q);
             return $res;
         }
 
         
         public function update_entity($table_name, $col_name, $new_value, $id){
-            $q = "UPDATE $table_name SET $col_name = $new_value WHERE id = " . $id;
+            $q = "UPDATE `$table_name` SET `$col_name` = '$new_value' WHERE id = " . $id;
             $res = $this->query($q);
             return $res;
         }

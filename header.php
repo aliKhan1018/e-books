@@ -24,7 +24,7 @@ if (isset($_SESSION["user_id"])) {
                                     $c = $db->get_entities('category');
                                     while ($cat = mysqli_fetch_array($c)) {
                                     ?>
-                                        <li><a href="books-<?= strtolower($cat["name"]) ?>.php?category_id=<?= $cat["id"] ?>"><?= $cat["name"] ?></a>
+                                        <li><a href="books-category.php?category_id=<?= $cat["id"] ?>"><?= $cat["name"] ?></a>
                                             <?php
                                             $q = "SELECT * FROM subcategory WHERE category_id = " . $cat['id'];
                                             $sc = $db->query($q);
@@ -32,7 +32,7 @@ if (isset($_SESSION["user_id"])) {
                                                 echo "<ul class='sub-menu'>";
                                                 while ($subcat = mysqli_fetch_array($sc)) {
                                             ?>
-                                        <li><a href="#"><?= $subcat['name'] ?></a></li>
+                                        <li><a href="books-subcategory.php?subcategory_id=<?= $subcat["id"] ?>"><?= $subcat['name'] ?></a></li>
                                 <?php }
                                                 echo "</ul>";
                                             } ?>
@@ -48,7 +48,6 @@ if (isset($_SESSION["user_id"])) {
                             <a href="#">About</a>
                             <ul class="sub-menu">
                                 <li><a href="about-us.php">About Us</a></li>
-                                <li><a href="blog.php">Blog</a></li>
                                 <li><a href="terms.php">Terms</a></li>
                             </ul>
                         </li>

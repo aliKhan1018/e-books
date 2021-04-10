@@ -119,7 +119,9 @@ $upcoming_competitions = $db->query($q);
                 <div class="row">
                     <?php
 
-                    $res = $db->get_entities('book');
+                    // $res = $db->get_entities('book');
+                    $q = "SELECT * from `book` order by `publishedon` desc limit 3";
+                    $res = $db->query($q);
                     while ($row = mysqli_fetch_array($res)) {
                     ?>
                         <div class="col-md-4 col-sm-6 col-xs-12" style="display: flex; justify-content:center;">

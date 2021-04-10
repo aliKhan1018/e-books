@@ -1,59 +1,78 @@
+<?php
+include "./inc/database.inc.php";
+session_start();
+$db = new database();
+
+?>
 <!DOCTYPE html>
 <html>
-    <head>
-        <meta charset="utf-8">
-        <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
-        <title>Books | Iqra</title>
-        
-        <meta name="description" content="">
-        <meta name="viewport" content="width=device-width, initial-scale=1">
 
-        <link rel="stylesheet" href="css/bootstrap.min.css">
-        <link rel="stylesheet" href="css/bootstrap-theme.min.css">
-        <link rel="stylesheet" href="css/fontAwesome.css">
-        <link rel="stylesheet" href="css/hero-slider.css">
-        <link rel="stylesheet" href="css/owl-carousel.css">
-        <link rel="stylesheet" href="css/style.css">
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+    <title>Books | Iqra</title>
 
-        <link href="https://fonts.googleapis.com/css?family=Raleway:100,200,300,400,500,600,700,800,900" rel="stylesheet">
+    <meta name="description" content="">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
 
-        <script src="js/vendor/modernizr-2.8.3-respond-1.4.2.min.js"></script>
-    </head>
+    <link rel="stylesheet" href="css/bootstrap.min.css">
+    <link rel="stylesheet" href="css/bootstrap-theme.min.css">
+    <link rel="stylesheet" href="css/fontAwesome.css">
+    <link rel="stylesheet" href="css/hero-slider.css">
+    <link rel="stylesheet" href="css/owl-carousel.css">
+    <link rel="stylesheet" href="css/style.css">
+
+    <link href="https://fonts.googleapis.com/css?family=Raleway:100,200,300,400,500,600,700,800,900" rel="stylesheet">
+
+    <script src="js/vendor/modernizr-2.8.3-respond-1.4.2.min.js"></script>
+</head>
 
 <body>
- 
+
     <?php include "./header.php"; ?>
-      
-    <section class="banner banner-secondary" id="top" style="background-image: url(img/banner-image-1-1920x300.jpg);">
+
+    <!-- <section class="banner banner-secondary" id="top" style="background-image: url(img/banner-image-1-1920x300.jpg);">
         <div class="container">
             <div class="row">
                 <div class="col-md-10 col-md-offset-1">
                     <div class="banner-caption">
                         <div class="line-dec"></div>
-                        <h2>Books</h2>
+                        <h2>Books - All</h2>
                     </div>
                 </div>
             </div>
         </div>
-    </section>
+    </section> -->
 
     <main>
         <section class="featured-places">
             <div class="container">
                 <div class="row">
-                    <div class="col-md-4 col-sm-6 col-xs-12" style="display: flex; justify-content:center;">
-                        <div class="featured-item">
-                            <div class="thumb">
-                                <img src="img/books/animalfarm.jpg" alt="">
-                            </div>
-                            <div class="back-info">
-                                <h1 class="title">Animal Farm</h1>
-                                <h2 class="author">George Orwell</h2>
-                                <p>Lorem, ipsum dolor sit amet consectetur adipisicing elit. Voluptatem nemo molestias quide...</p>
-                                <a href="#"><div class="buy-button" style="width: 100%;"><b>Buy Now!</b></div></a>
+                    <?php
+
+                    $res = $db->get_entities('book');
+                    while ($row = mysqli_fetch_array($res)) {
+                    ?>
+                        <div class="col-md-4 col-sm-6 col-xs-12" style="display: flex; justify-content:center;">
+                            <div class="featured-item">
+                                <div class="thumb">
+                                    <img src="img/uploaded/<?= $row['image'] ?>" alt="">
+                                </div>
+                                <div class="back-info">
+                                    <h1 class="title"><?php echo substr($row['title'], 0, 13);
+                                                        if (strlen($row["title"]) > 13) {
+                                                            echo "...";
+                                                        }
+                                                        ?> </h1>
+                                    <h2 class="author"><?= $row['author'] ?></h2>
+                                    <p><?= substr($row['description'], 0, 125) ?>...</p>
+                                    <a href="book-details.php?id=<?= $row['id'] ?>">
+                                        <div class="buy-button" style="width: 100%;"><b>Buy Now!</b></div>
+                                    </a>
+                                </div>
                             </div>
                         </div>
-                    </div>
+                    <?php } ?>
                 </div>
             </div>
         </section>
@@ -121,12 +140,15 @@
     </div>
 
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.2/jquery.min.js" type="text/javascript"></script>
-    <script>window.jQuery || document.write('<script src="js/vendor/jquery-1.11.2.min.js"><\/script>')</script>
+    <script>
+        window.jQuery || document.write('<script src="js/vendor/jquery-1.11.2.min.js"><\/script>')
+    </script>
 
     <script src="js/vendor/bootstrap.min.js"></script>
-    
+
     <script src="js/datepicker.js"></script>
     <script src="js/plugins.js"></script>
     <script src="js/main.js"></script>
 </body>
+
 </html>

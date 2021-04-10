@@ -4,10 +4,11 @@ session_start();
 $db = new database();
 
 $user_id = $_SESSION["user_id"];
-$q = "SELECT `order`.`id` as `order_id`, `book_order`.`book_id`from `order`
+$q = "SELECT `order`.`id` as `order_id`, `book_order`.`book_id`, `book_order`.`status` from `order`
         left join `book_order`
         on `order`.`id` = `book_order`.`order_id`
-        where `order`.`user_id` = $user_id AND `book_order`.`version` = 'pdf'";
+        where `order`.`user_id` = $user_id AND `book_order`.`version` = 'pdf'
+        group by `book_order`.`book_id`";
 $res = $db->query($q);
 ?>
 
@@ -30,8 +31,9 @@ $res = $db->query($q);
                         <thead>
                             <tr>
                                 <th>Book</th>
+                                <th>Ordered On</th>
                                 <th>Status</th>
-                                <th>Download</th>
+                                <th></th>
                             </tr>
                         </thead>
                         <tbody>
@@ -45,9 +47,10 @@ $res = $db->query($q);
                                         <div class="imgbox-sm" style="float: left;"><img src="./img/uploaded/<?= $book["image"] ?>" alt=""></div>
                                         <p style="margin: 13px 0 0 50px;"><?=$book["title"]?></p>
                                     </td>
-                                    <td><?= $order["status"] ?></td>
+                                    <td><?=$order["orderedon"]?></td>
+                                    <td><?= $row["status"] ?></td>
                                     <td>
-                                        <a href="./pdf/<?= $book["pdf"] ?>" download="<?= $book["title"] ?>"><?= $book["title"] ?></a>
+                                        <a href="./pdf/<?= $book["pdf"] ?>" download="<?= $book["title"] ?>">Download PDF</a>
                                     </td>
                                 </tr>
                             <?php } ?>

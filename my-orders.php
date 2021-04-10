@@ -4,7 +4,7 @@ session_start();
 $db = new database();
 
 $user_id = $_SESSION["user_id"];
-$q = "SELECT * FROM `order` WHERE `user_id` = $user_id";
+$q = "SELECT * FROM `order` WHERE `user_id` = $user_id ORDER BY orderedon DESC";
 $res = $db->query($q);
 ?>
 
@@ -30,7 +30,7 @@ $res = $db->query($q);
                                 <th>Books </th>
                                 <th>Status</th>
                                 <th>Cost</th>
-                                // ! order orders by the date they were ordered on.
+                                <!-- // ! order orders by the date they were ordered on. -->
                                 <th>Ordered On</th>
                             </tr>
                         </thead>

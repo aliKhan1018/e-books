@@ -7,7 +7,8 @@ $orders = $db->get_entities('order');
 $total_orders = $orders->num_rows;
 
 $q = "SELECT SUM(cost) as total FROM `order` WHERE `status` = 'completed'";
-$total_balance = $db->query($q)->fetch_assoc()["total"];
+$res = $db->query($q)->fetch_assoc()["total"];
+$total_balance = $res ? $res : 0;
 
 $q = "SELECT COUNT(id) as total FROM `order` WHERE `status` = 'pending'";
 $pending_orders = $db->query($q)->fetch_assoc()["total"];
@@ -18,16 +19,11 @@ $completed_orders = $db->query($q)->fetch_assoc()["total"];
 $q = "SELECT COUNT(id) as total from `user`";
 $users = $db->query($q)->fetch_assoc()["total"];
 
-$contacts = $db->get_entities('contact');
-
 $q = "SELECT COUNT(id) as total from `contact`";
 $contact_count = $db->query($q)->fetch_assoc()["total"];
 
-$q = "select book.id, book.title, (book.price * book_order.quantity) as total from book
-left join book_order
-on book.id = book_order.book_id
-where book_order.book_id = 2 and book_order.version = 'phy'";
-$
+$q = "SELECT * from `contact` where resolved = 0 order by id desc limit 3";
+$contacts = $db->query($q);
 
 
 ?>
@@ -126,8 +122,8 @@ $
                         </div>
                     </div>
 
-                    // ? Search for group by statements.
-                    // ? group books by sales  
+                    <!-- // ? Search for group by statements. -->
+                    <!-- // ? group books by sales   -->
                     <div class="row row-deck">
                         <div class="col-lg-4">
                             <div class="card gradient-bottom">
@@ -136,26 +132,56 @@ $
                                 </div>
                                 <div class="card-body" id="top-5-scroll">
                                     <ul class="list-unstyled list-unstyled-border">
-                                        <li class="media">
-                                            <img class="mr-3 rounded" width="55" src="assets/img/products/product-3-50.png" alt="product">
-                                            <div class="media-body">
-                                                <div class="float-right">
-                                                    <div class="font-weight-600 text-muted text-small">86 Sales</div>
-                                                </div>
-                                                <div class="media-title">oPhone S9 Limited</div>
-                                                <div class="mt-1">
-                                                    // ? see if you can work out percentages...well you can..but...yeah..this is weird. 
-                                                    <div class="budget-price">
-                                                        <div class="budget-price-square bg-primary" data-width="64%"></div>
-                                                        <div class="budget-price-label">$68,714</div>
+                                        <?php
+                                        $q = "SELECT * from `book`";
+                                        $top_5_books = $db->query($q);
+
+                                        // ? two loops: one for setiing variables and querying. And the other for displaying.
+                                        while ($row = mysqli_fetch_array($top_5_books)) {
+                                            $book_id = $row["id"];
+
+                                            $q = "SELECT `book`.id, count(`book`.id) as phy_sales, `book`.title, sum(`book`.price * phy.quantity) as phy_total from `book`
+                                                    left join `book_order` as phy 
+                                                    on `book`.id = phy.book_id 
+                                                    where phy.book_id = $book_id and phy.version = 'phy'";
+                                            $physical = $db->query($q)->fetch_assoc();
+
+                                            $q = "SELECT `book`.id, count(`book`.id) as pdf_sales, `book`.title, sum(`book`.price * pdf.quantity) as pdf_total from `book`
+                                                    left join `book_order` as pdf
+                                                    on `book`.id = pdf.book_id
+                                                    where pdf.book_id = $book_id and pdf.version = 'pdf'";
+                                            $pdf = $db->query($q)->fetch_assoc();
+
+                                            $total_phy_earnings = $physical["phy_total"] ? $physical["phy_total"] : 0;
+                                            $total_pdf_earnings = $pdf["pdf_total"] ? $pdf["pdf_total"] : 0;
+                                            $total_earnings = $total_pdf_earnings + $total_phy_earnings;
+
+                                            $pdf_earnings_perc = $total_earnings > 0 ? ($total_pdf_earnings / $total_earnings) * 100 : 0;
+                                            $phy_earnings_perc = $total_earnings > 0 ? ($total_phy_earnings / $total_earnings) * 100 : 0;
+
+                                            $total_sales = $physical["phy_sales"] + $pdf["pdf_sales"];
+                                        ?>
+                                            <li class="media">
+                                                <img class="mr-3 rounded" width="55" src="./img/uploaded/<?=$row["image"]?>" alt="product">
+                                                <div class="media-body">
+                                                    <div class="float-right">
+                                                        <div class="font-weight-600 text-muted text-small"><?= $total_sales ?> Sales</div>
                                                     </div>
-                                                    <div class="budget-price">
-                                                        <div class="budget-price-square bg-danger" data-width="43%"></div>
-                                                        <div class="budget-price-label">$38,700</div>
+                                                    <div class="media-title"><?= $row["title"] ?></div>
+                                                    <div class="mt-1">
+                                                        <!-- // ? see if you can work out percentages...well you can..but...yeah..this is weird. -->
+                                                        <div class="budget-price">
+                                                            <div class="budget-price-square bg-primary" data-width="<?= $phy_earnings_perc ?>%"></div>
+                                                            <div class="budget-price-label">$<?= $total_phy_earnings ?></div>
+                                                        </div>
+                                                        <div class="budget-price">
+                                                            <div class="budget-price-square bg-danger" data-width="<?= $pdf_earnings_perc ?>%"></div>
+                                                            <div class="budget-price-label">$<?= $total_pdf_earnings ?></div>
+                                                        </div>
                                                     </div>
                                                 </div>
-                                            </div>
-                                        </li>
+                                            </li>
+                                        <?php } ?>
                                     </ul>
                                 </div>
                                 <div class="card-footer pt-3 d-flex justify-content-center">
@@ -185,14 +211,14 @@ $
                                         <?php while ($row = mysqli_fetch_array($contacts)) { ?>
                                             <a href="#" class="ticket-item">
                                                 <div class="ticket-title">
-                                                    <h4><?= substr($row["message"], 0, 50) ?></h4>
+                                                    <h4><?= substr($row["subject"], 0, 50) ?></h4>
                                                 </div>
                                                 <div class="ticket-info">
                                                     <div><?php
-                                                        $user_id = $row["user_id"];
-                                                        $user = $db->get_entity('user', $user_id);
-                                                        echo $user["name"];
-                                                    ?></div>
+                                                            $user_id = $row["user_id"];
+                                                            $user = $db->get_entity('user', $user_id);
+                                                            echo $user["name"];
+                                                            ?></div>
                                                     <div class="bullet"></div>
                                                     <div class="text-primary">1 min ago</div>
                                                 </div>
@@ -346,7 +372,7 @@ $
                             </div>
                         </div>
                     </div> -->
-                    <div class="row row-deck">
+                    <!-- <div class="row row-deck">
                         <div class="col-md-12">
                             <div class="card">
                                 <div class="card-header">
@@ -426,7 +452,7 @@ $
                             </div>
                         </div>
 
-                    </div>
+                    </div> -->
                 </section>
             </div>
 

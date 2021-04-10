@@ -15,7 +15,7 @@ class Utility
 
     static function console_log($msg)
     {
-        return "<script>console.log('" . $msg . "');</script>";
+        return '<script>console.log("' . $msg . '");</script>';
     }
 
     static function console_warn($msg)

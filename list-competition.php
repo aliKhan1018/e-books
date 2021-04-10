@@ -57,10 +57,10 @@ session_start();
                                                     <tr>
                                                         <td><?= $row["id"] ?></td>
                                                         <td>
-                                                           <?= $row["topic"] ?>
+                                                            <?= $row["topic"] ?>
                                                         </td>
                                                         <td>
-                                                            <?= $row["prize"] ?> 
+                                                            <?= $row["prize"] ?>
                                                         </td>
                                                         <td>
                                                             <?= $row["start_time"] ?>
@@ -69,12 +69,14 @@ session_start();
                                                             <?= $row["end_time"] ?>
                                                         </td>
                                                         <td>
-                                                        <a href="details-competition.php?id=<?= $row["id"] ?>" class="btn btn-primary">Edit</a> /
-                                                        <a href="details-competition.php?id=<?= $row["id"] ?>" class="btn btn-secondary">Detail</a> / <a href="delete-confirm-competition.php?id=<?= $row["id"] ?>" class="btn btn-danger">Delete</a></td>
+                                                            <a href="details-competition.php?id=<?= $row["id"] ?>" class="btn btn-primary">Edit</a> /
+                                                            <a href="details-competition.php?id=<?= $row["id"] ?>" class="btn btn-secondary">Detail</a> / <a href="delete-confirm-competition.php?id=<?= $row["id"] ?>" class="btn btn-danger">Delete</a>
+                                                        </td>
                                                     </tr>
-                                                    <?php } if($res->num_rows == 0){
+                                                <?php }
+                                                if ($res->num_rows == 0) {
                                                     echo "<tr><td colspan='7'><div class='alert alert-danger'>No book_genre found!</div></td></tr>";
-                                                }?>
+                                                } ?>
 
                                             </table>
                                         </div>

@@ -39,7 +39,7 @@ if (isset($_POST["edit"])) {
     $db->update_entity('book', 'price', $price, $url_id);
     $db->update_entity('book', 'stock', $stock, $url_id);
     $db->update_entity('book', 'category_id', $category, $url_id);
-    $db->update_entity('book', 'subcategory_id', $subcategory, $url_id);
+    $db->update_entity('book', 'subcategory_id', $subcat, $url_id);
 
     echo Utility::alert("Changes Saved!");
 }
@@ -157,26 +157,31 @@ if (isset($_POST["edit"])) {
                                                 <input type="number" name="stock" class="form-control" value="<?= $book['stock'] ?>" min="0">
                                             </div>
                                         </div>
-                                        <div class="form-group">
-                                            <label>Category</label>
-                                            <select name="category" class="form-control select1">
-                                                <option value="">Select Category...</option>
-                                                <?php
-                                                $res = $db->get_entities('category');
-
-                                                while ($row = mysqli_fetch_array($res)) {
-                                                ?>
-                                                    <option value="<?= $row["id"] ?>"><?= $row["name"] ?></option>
-                                                <?php } ?>
-                                            </select>
+                                        <div class="row">
+                                            <div class="col-sm-12 col-md-6 form-group">
+                                                <label for="sel1">Category</label>
+                                                <select class="form-control" id="category" name="category" required>
+                                                    <option value="">Select Category</option>
+                                                    <?php
+                                                    $res = $db->get_entities('category');
+                                            
+                                                    while ($row = mysqli_fetch_array($res)) {
+                                                    ?>
+                                                        <option value="<?= $row["id"]; ?>"><?= $row["name"]; ?></option>
+                                                    <?php
+                                                    }
+                                                    ?>
+                                            
+                                                </select>
+                                            </div>
+                                            <div class="col-sm-12 col-md-6 form-group">
+                                                <label for="sel1">Sub Category</label>
+                                                <select class="form-control" id="sub_category" name="subcategory" required>
+                                                    <option value="">Select a category</option>
+                                                </select>
+                                            </div>
                                         </div>
-                                        <div class="form-group">
-                                            <label for="sel1">Sub Category</label>
-                                            <select class="form-control" id="sub_category" name="subcategory">
-
-                                            </select>
-                                        </div>
-                                        <div class="form-group">
+                                        <!-- <div class="form-group">
                                             <label>Genre(s)</label>
                                             <select class="form-control select2" multiple="">
                                                 <option>Option 1</option>
@@ -186,7 +191,7 @@ if (isset($_POST["edit"])) {
                                                 <option>Option 5</option>
                                                 <option>Option 6</option>
                                             </select>
-                                        </div>
+                                        </div> -->
                                         <div class="form-group">
                                             <label>Image</label>
                                             <div class="imgbox"><img src="./img/uploaded/<?= $book['image'] ?>" id="output" alt="Upload an image!" ></div>
@@ -203,7 +208,6 @@ if (isset($_POST["edit"])) {
 
                                         <div class="form-group">
                                             <label>PDF File</label>
-                                            <div class="imgbox"><img src="" id="output" alt="Upload an image!"></div>
                                             <input 
                                                 type="file" 
                                                 value="<?= $book['pdf'] ?>" 
@@ -279,8 +283,6 @@ if (isset($_POST["edit"])) {
                         $("#sub_category").html(dataResult);
                     }
                 });
-
-
             });
         });
     </script>
