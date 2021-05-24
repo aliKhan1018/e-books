@@ -6,6 +6,12 @@ $db = new database();
 $user_id = $_SESSION["user_id"];
 $q = "SELECT * FROM `order` WHERE `user_id` = $user_id ORDER BY orderedon DESC";
 $res = $db->query($q);
+
+if(isset($_POST["rem"])){
+    $db->update_entity('order', 'status', 'cancelled', $_POST["rem"]);
+    Utility::redirect_to("my-orders.php");
+}
+
 ?>
 
 <!DOCTYPE html>
@@ -30,8 +36,8 @@ $res = $db->query($q);
                                 <th>Books </th>
                                 <th>Status</th>
                                 <th>Cost</th>
-                                <!-- // ! order orders by the date they were ordered on. -->
                                 <th>Ordered On</th>
+                                <th></th>
                             </tr>
                         </thead>
                         <tbody>
@@ -54,6 +60,10 @@ $res = $db->query($q);
                                     <td><?= $row["status"] ?></td>
                                     <td>$<?= $row["cost"] ?></td>
                                     <td><?= $row["orderedon"] ?></td>
+                                    <td><?php if(!($row["status"] == "confirmed" or $row["status"] == "completed")){ ?>
+                                        <button type="submit" class="btn btn-danger" name="rem" value="<?= $order_id ?>">Cancel Order</button> 
+                                        <?php } ?>
+                                    </td>
                                 </tr>
                             <?php }
                             ?>
@@ -66,13 +76,16 @@ $res = $db->query($q);
     </section>
 
     <?php include "./footer.php"; ?>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.2/jquery.min.js" type="text/javascript"></script>
     <script>
-        // function updatePrice(price) {
-        //      let qty = document.getElementById("qty").value;
-        //      let total = parseFloat(price) * parseFloat(qty);
-        //      document.getElementById("price").innerText = total;
-        // }
+        window.jQuery || document.write('<script src="js/vendor/jquery-1.11.2.min.js"><\/script>')
     </script>
+
+    <script src="js/vendor/bootstrap.min.js"></script>
+
+    <script src="js/datepicker.js"></script>
+    <script src="js/plugins.js"></script>
+    <script src="js/main.js"></script>
 </body>
 
 </html>

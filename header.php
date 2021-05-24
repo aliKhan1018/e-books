@@ -53,6 +53,10 @@ if (isset($_SESSION["user_id"])) {
                         </li>
 
                         <li><a href="contact.php">Contact Us</a></li>
+                        <li>
+                            <a href = "search.php" >Advance Search</a>
+                            
+                            </li>
                         <?php
                         if (isset($_SESSION["user_id"])) {
                         ?>
@@ -64,6 +68,8 @@ if (isset($_SESSION["user_id"])) {
                                     <li><a href="logout.php">Logout</a></li>
                                 </ul>
                             </li>
+
+                           
                             <li>
                                 <a href="cart.php" class="fa fa-shopping-cart">
                                     <span class="item-count">
@@ -122,7 +128,7 @@ if (isset($_SESSION["user_id"])) {
                                                     if (isset($_SESSION["cart"])) {
                                                     ?>
                                                         <div class="btn-checkout">
-                                                            <a href="#" class=""><b>Proceed to Checkout</b></a>
+                                                            <a href="./checkout.php" class=""><b>Proceed to Checkout</b></a>
                                                         </div>
                                                     <?php } ?>
                                                 </td>

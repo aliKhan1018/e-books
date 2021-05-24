@@ -10,15 +10,23 @@ if (isset($_POST["add"])) {
     $start = $_POST["starttime"];
     $end = $_POST["endtime"];
 
-    $pdf = $_FILES["pdf"]["name"];
-    $path = "./pdf/" . $pdf;
-    move_uploaded_file($_FILES["pdf"]["tmp_name"], $path);
-
-    $q = "INSERT INTO competition (topic, prize, start_time, end_time, research) VALUES ('$topic', '$prize', '$start', '$end', '$pdf')";
+    $q = "SELECT * FROM `competition` where '$start' >= start_time and '$end' <= end_time";
     $res = $db->query($q);
-    if ($res) {
+
+    if ($res->num_rows == 0) {
+        echo Utility::alert("there is already a competition within the given period");
     } else {
-        echo Utility::alert("Error! Check console.");
+
+        $pdf = $_FILES["pdf"]["name"];
+        $path = "./pdf/" . $pdf;
+        move_uploaded_file($_FILES["pdf"]["tmp_name"], $path);
+
+        $q = "INSERT INTO competition (topic, prize, start_time, end_time, research) VALUES ('$topic', '$prize', '$start', '$end', '$pdf')";
+        $res = $db->query($q);
+        if ($res) {
+        } else {
+            echo Utility::alert("Error! Check console.");
+        }
     }
 }
 ?>
@@ -84,6 +92,32 @@ if (isset($_POST["add"])) {
                                             </div>
                                         </div>
 
+                                        <div class="row">
+                                            <div class="form-group col-md-6">
+                                                <label>Start Time</label>
+                                                <div class="input-group">
+                                                    <div class="input-group-prepend">
+                                                        <div class="input-group-text">
+                                                            <i class="fa fa-calendar"></i>
+                                                        </div>
+                                                    </div>
+                                                    <input type="date" class="form-control" min="<?= Utility::get_date_formatted() ?>" name="starttime" id="start-time" onchange="updateDate()">
+                                                </div>
+                                            </div>
+
+                                            <div class="form-group col-sm-12 col-md-6">
+                                                <label>End Time</label>
+                                                <div class="input-group">
+                                                    <div class="input-group-prepend">
+                                                        <div class="input-group-text">
+                                                            <i class="fa fa-calendar"></i>
+                                                        </div>
+                                                    </div>
+                                                    <input class="form-control" type="date" name="endtime" id="end-time">
+                                                </div>
+                                            </div>
+                                        </div>
+
                                         <div class="form-group">
                                             <label>Research Material</label>
                                             <div class="input-group">
@@ -96,21 +130,7 @@ if (isset($_POST["add"])) {
                                             </div>
                                         </div>
 
-                                        <div class="row">
-                                            <div class="form-group col-md-6">
-                                                <label>Start Time</label>
-                                                <div class="input-group">
-                                                    <input type="date" class="form-control" min="<?=Utility::get_date_formatted()?>" name="starttime" id="start-time" onchange="updateDate()">
-                                                </div>
-                                            </div>
-                                            
-                                            <div class="form-group col-sm-12 col-md-6">
-                                                <label>End Time</label>
-                                                <div class="input-group">
-                                                    <input class="form-control" type="date" name="endtime" id="end-time">
-                                                </div>
-                                            </div>
-                                        </div>
+
 
                                         <div class="form-group">
                                             <input type="submit" value="Add Competition" name="add" class="btn btn-secondary" style="float: right;">
@@ -162,7 +182,7 @@ if (isset($_POST["add"])) {
             image.src = URL.createObjectURL(event.target.files[0]);
         };
 
-        function updateDate(){
+        function updateDate() {
             let startDate = document.getElementById("start-time").value;
             document.getElementById("end-time").min = startDate;
         }

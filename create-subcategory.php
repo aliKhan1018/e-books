@@ -5,23 +5,15 @@ session_start();
 $db = new database();
 
 if (isset($_POST["add"])) {
-    $title = $_POST["title"];
-    $desc = $_POST["desc"];
-    $author = $_POST["author"];
-    $pubon = $_POST["pubon"];
-    $publisher = $_POST["publisher"];
-    $price = $_POST["price"];
-    $stock = $_POST["stock"];
+    
     $category = $_POST["category"];
+    $name = $_POST["name"];
 
-    $img = $_FILES["image"]["name"];
-    $path = "./img/uploaded/" . $img;
-    move_uploaded_file($_FILES["image"]["tmp_name"], $path);
-
-    $q = "INSERT INTO book (`title`, `description`, `price`, `author`, `publisher`, `publishedon`, `stock`, `category_id`, `image`) VALUES ('$title', '$desc', '$price', '$author', '$publisher', '$pubon', '$stock', '$category', '$img')";
+   
+    $q = "INSERT INTO `subcategory` (`name`, `category_id`) VALUES ('$name', '$category')";
     $res = $db->query($q);
     if ($res) {
-        // echo "<div class='alert alert-success'><b>Book Added Successfully!</b></div>";
+        // echo "<div class='alert alert-success'><b>Successfully!</b></div>";
     } else {
         echo Utility::alert("Error! Check console.");
     }
@@ -52,7 +44,7 @@ if (isset($_POST["add"])) {
             <div class="main-content">
                 <section class="section">
                     <div class="section-header">
-                        <h1>Add Book</h1>
+                        <h1>Create Category</h1>
                     </div>
 
                     <div class="section-body">
@@ -60,26 +52,16 @@ if (isset($_POST["add"])) {
                             <div class="card">
                                 <?php if(isset($res)){
                                     ?>
-                                    <div class='alert alert-success'><b>Book Added Successfully!</b></div>
-                                    <?php }?>
+                                <div class='alert alert-success'><b>Book Added Successfully!</b></div>
+                                <?php }?>
 
                                 <div class="card-header">
-                                    <h4>Enter book details</h4>
+                                    <h4>Category details</h4>
                                 </div>
                                 <form method="post" action="" enctype="multipart/form-data">
                                     <div class="card-body">
-                                        <div class="form-group">
-                                            <label>i'd</label>
-                                            <div class="input-group">
-                                                <div class="input-group-prepend">
-                                                    <div class="input-group-text">
-                                                        <i class="fa fa-book"></i>
-                                                    </div>
-                                                </div>
-                                                <input type="text" name="title" class="form-control">
-                                            </div>
-                                        </div>
-                                        <div class="form-group">
+                                        
+                                         <div class="form-group">
                                             <label>Name</label>
                                             <div class="input-group">
                                                 <div class="input-group-prepend">
@@ -87,12 +69,32 @@ if (isset($_POST["add"])) {
                                                         <i class="fa fa-user"></i>
                                                     </div>
                                                 </div>
-                                                <input type="text" name="author" class="form-control">
+                                                <input type="text" name="name" class="form-control">
                                             </div>
                                         </div>
-                                       
+                                        <div class="row">
+
+                                            <div class="col-sm-12 col-md-12 form-group">
+                                                <label for="sel1">Category</label>
+                                                <select class="form-control" id="category" required name="category">
+                                                    <option value="">Select Category</option>
+                                                    <?php
+                                                    $res = $db->get_entities('category');
+                                            
+                                                    while ($row = mysqli_fetch_array($res)) {
+                                                    ?>
+                                                    <option value="<?= $row["id"]; ?>"><?= $row["name"]; ?></option>
+                                                    <?php
+                                                    }
+                                                    ?>
+
+                                                </select>
+                                            </div>
+                                        </div>
+
                                         <div class="form-group">
-                                            <input type="submit" value="Add Book" name="add" class="btn btn-secondary" style="float: right;">
+                                            <input type="submit" value="Add Book" name="add" class="btn btn-secondary"
+                                                style="float: right;">
                                         </div>
                                     </div>
                                 </form>
@@ -136,10 +138,10 @@ if (isset($_POST["add"])) {
     <script src="js/scripts.js"></script>
     <script src="js/custom.js"></script>
     <script>
-        var loadFile = function(event) {
-            var image = document.getElementById('output');
-            image.src = URL.createObjectURL(event.target.files[0]);
-        };
+    var loadFile = function(event) {
+        var image = document.getElementById('output');
+        image.src = URL.createObjectURL(event.target.files[0]);
+    };
     </script>
 </body>
 

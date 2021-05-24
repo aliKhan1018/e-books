@@ -2,6 +2,12 @@
 include "./inc/database.inc.php";
 session_start();
 $db = new database();
+error_reporting(0);
+
+if(isset($_GET['email'])){
+    $url_email = $_GET['email'];
+}
+
 if (isset($_POST["login"])) {
     $e = $_POST["email"];
     $p = $_POST["pswd"];
@@ -18,8 +24,6 @@ if (isset($_POST["login"])) {
         }
         header("location: index.php");
         die();
-    } else {
-        // echo Utility::alert("not login");
     }
 }
 ?>
@@ -40,6 +44,11 @@ if (isset($_POST["login"])) {
     <?php include "./header.php"; ?>
 
     <section class="login-section">
+    <?php
+    if(!$valid){
+        echo "<div class='alert alert-danger'><b>Login failed!</b> Incorrect email or password.</div>";
+    }
+    ?>
         <form action="" method="post">
             <table>
                 <tr>
@@ -50,7 +59,7 @@ if (isset($_POST["login"])) {
                 <tr>
                     <td>
                         <label for="">Email: </label>
-                    <td><input type="email" name="email" placeholder="Enter your email" id="" required></td>
+                    <td><input type="email" name="email" value="<?php if(isset($url_email)) { echo $url_email; }?>" placeholder="Enter your email" id="" required></td>
                     </td>
                 </tr>
                 <tr>
@@ -82,18 +91,16 @@ if (isset($_POST["login"])) {
     </section>
     
     <?php include "./footer.php"; ?>
-    <script src="assets/bundles/lib.vendor.bundle.js"></script>
-    <script src="js/CodiePie.js"></script>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.2/jquery.min.js" type="text/javascript"></script>
+    <script>
+        window.jQuery || document.write('<script src="js/vendor/jquery-1.11.2.min.js"><\/script>')
+    </script>
 
-    <!-- JS Libraies -->
-    <script src="assets/modules/prism/prism.js"></script>
+    <script src="js/vendor/bootstrap.min.js"></script>
 
-    <!-- Page Specific JS File -->
-    <script src="js/page/bootstrap-modal.js"></script>
-
-    <!-- Template JS File -->
-    <script src="js/scripts.js"></script>
-    <script src="js/custom.js"></script>
+    <script src="js/datepicker.js"></script>
+    <script src="js/plugins.js"></script>
+    <script src="js/main.js"></script>
 </body>
 
 </html>

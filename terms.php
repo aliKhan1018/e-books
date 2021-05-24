@@ -1,63 +1,34 @@
+<?php
+include "./inc/database.inc.php";
+$db = new database();
+session_start();
+?>
 <!DOCTYPE html>
 <html>
-    <head>
-        <meta charset="utf-8">
-        <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
-        <title>PHPJabbers.com | Free Shopping Website Template</title>
-        
-        <meta name="description" content="">
-        <meta name="viewport" content="width=device-width, initial-scale=1">
 
-        <link rel="stylesheet" href="css/bootstrap.min.css">
-        <link rel="stylesheet" href="css/bootstrap-theme.min.css">
-        <link rel="stylesheet" href="css/fontAwesome.css">
-        <link rel="stylesheet" href="css/hero-slider.css">
-        <link rel="stylesheet" href="css/owl-carousel.css">
-        <link rel="stylesheet" href="css/style.css">
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+    <title>PHPJabbers.com | Free Shopping Website Template</title>
 
-        <link href="https://fonts.googleapis.com/css?family=Raleway:100,200,300,400,500,600,700,800,900" rel="stylesheet">
+    <meta name="description" content="">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
 
-        <script src="js/vendor/modernizr-2.8.3-respond-1.4.2.min.js"></script>
-    </head>
+    <link rel="stylesheet" href="css/bootstrap.min.css">
+    <link rel="stylesheet" href="css/bootstrap-theme.min.css">
+    <link rel="stylesheet" href="css/fontAwesome.css">
+    <link rel="stylesheet" href="css/hero-slider.css">
+    <link rel="stylesheet" href="css/owl-carousel.css">
+    <link rel="stylesheet" href="css/style.css">
+
+    <link href="https://fonts.googleapis.com/css?family=Raleway:100,200,300,400,500,600,700,800,900" rel="stylesheet">
+
+    <script src="js/vendor/modernizr-2.8.3-respond-1.4.2.min.js"></script>
+</head>
 
 <body>
- 
-    <div class="wrap">
-        <header id="header">
-            <div class="container">
-                <div class="row">
-                    <div class="col-md-12">
-                        <button id="primary-nav-button" type="button">Menu</button>
-                        <a href="index.html"><div class="logo">
-                            <img src="img/logo.png" alt="Venue Logo">
-                        </div></a>
-                        <nav id="primary-nav" class="dropdown cf">
-                            <ul class="dropdown menu">
-                                <li><a href="index.html">Home</a></li>
 
-                                <li><a href="products.html">Products</a></li>
-
-                                <li><a href="checkout.html">Checkout</a></li>
-
-                                <li class='active'>
-                                    <a href="#">About</a>
-                                    <ul class="sub-menu">
-                                        <li><a href="about-us.html">About Us</a></li>
-                                        <li><a href="blog.html">Blog</a></li>
-                                        <li><a href="testimonials.html">Testimonials</a></li>
-                                        <li class='active'><a href="terms.html">Terms</a></li>
-                                    </ul>
-                                </li>
-
-                                <li><a href="contact.html">Contact Us</a></li>
-                            </ul>
-                        </nav><!-- / #primary-nav -->
-                    </div>
-                </div>
-            </div>
-        </header>
-    </div>
-      
+    <?php include "./header.php"; ?>
 
     <main>
         <section class="popular-places">
@@ -67,7 +38,7 @@
 
                 <br>
 
-                <h4>Bandya hu oh bandya hic dicta corrupti culpa quasi quos asperiores nam ipsum optio odit quia</h4>
+                <h4>Bandya hu bandya hic dicta corrupti culpa quasi quos asperiores nam ipsum optio odit quia</h4>
                 <p>Call me ishmael. dolor sit amet, consectetur adipisicing elit. Dolorum ex deserunt reiciendis fuga tempore quae debitis necessitatibus, nulla harum iste consectetur. Mollitia soluta nesciunt veritatis ullam voluptate odio nobis. Magni ex debitis atque nihil temporibus est incidunt alias voluptatem itaque.</p>
 
                 <br>
@@ -99,14 +70,18 @@
             </div>
         </section>
 
-        <section class="popular-places">
-            <div class="container text-center">
-                <h4>Lorem ipsum dolor sit amet, consectetur adipisicing.</h4>
+        <section id="video-container">
+            <div class="video-overlay"></div>
+            <div class="video-content">
+                <div class="inner">
+                    <div class="section-heading">
+                        <span>Contact Us</span>
+                        <h2>Have an issue? Want to suggest something? We are always listening to what our customers have to say.</h2>
+                    </div>
 
-                <br>
-
-                <div class="blue-button">
-                    <a href="contact.html">Contact Us</a>
+                    <div class="blue-button">
+                        <a href="contact.php">Give us your feedback</a>
+                    </div>
                 </div>
             </div>
         </section>
@@ -174,12 +149,15 @@
     </div>
 
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.2/jquery.min.js" type="text/javascript"></script>
-    <script>window.jQuery || document.write('<script src="js/vendor/jquery-1.11.2.min.js"><\/script>')</script>
+    <script>
+        window.jQuery || document.write('<script src="js/vendor/jquery-1.11.2.min.js"><\/script>')
+    </script>
 
     <script src="js/vendor/bootstrap.min.js"></script>
-    
+
     <script src="js/datepicker.js"></script>
     <script src="js/plugins.js"></script>
     <script src="js/main.js"></script>
 </body>
+
 </html>

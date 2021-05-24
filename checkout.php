@@ -18,14 +18,13 @@ if (isset($_POST["confirm"])) {
 
      // genreate and check if the order number exists...keep repeating the process as long as it exists.
      do {
-          $generated_order_number = Utility::generateOrderNumber();
+          $generated_order_number = Utility::generateRandomString('order', 11);
 
           $q = "SELECT id FROM `order` WHERE order_number = '$generated_order_number'";
           $res = $db->query($q);
      } while ($res === TRUE);
 
-     // TODO order status based on version being either physical or digital.
-     $date = Utility::get_date_formatted();
+     $date = date("Y-m-d h:iA", time());
      $q = "INSERT INTO `order` (`user_id`, `payment`, `zip`, `order_number`, `cost`, `orderedon`) VALUES ($u_id, '$pay', '$zip', '$generated_order_number', $grand_total, '$date');";
      $res = $db->query($q);
 
@@ -70,16 +69,53 @@ if (isset($_POST["confirm"])) {
 
           // generate one-time pass code.
           do {
-               $otp = Utility::generateRandomString(6);
+               $otp = Utility::generateRandomString('otp', 6);
 
                $q = "SELECT id FROM otp WHERE otp = '$otp'";
                $res = $db->query($q);
           } while ($res === TRUE);
 
-
           $q = "INSERT INTO otp (`otp`, `order_id`) VALUES ('$otp', $order_id)";
           $res = $db->query($q);
+// email
+$to = $email;
+$subject = 'Order Confirmation';
+$from = 'peterparker@email.com';
+ 
+// To send HTML mail, the Content-type header must be set
+$headers  = 'MIME-Version: 1.0' . "\r\n";
+$headers .= 'Content-type: text/html; charset=iso-8859-1' . "\r\n";
+ 
+// Create email headers
+$headers .= 'From: '.$from."\r\n".
+    'Reply-To: '.$from."\r\n" .
+    'X-Mailer: PHP/' . phpversion();
+ 
+// Compose a simple HTML email message
+$message = "<html><body>";
+$message .= '<h1 style="color:orange">Your order has been placed</h1>';
+$message .= " <p>We are pleased to inform that your order has been placed.
+We hope you are enjoying your recent purchase! Once you have a chance, we would love to hear
+your shopping experience to keep us constantly improving.</p>";
+$message .= '<h3 style="color:orange">Package Details</h3>';
+$message .= "<tr><td><strong>Your OTP(one time password) is: $otp</strong> </td><td></td></tr>";
+$message .= "<tr><td><strong>Your order number is: </strong> $generated_order_number</td><td></td></tr>";
+$message .= "<tr><td><strong>Click here to confirm your order: </strong> http://localhost/e-books/confirm-order.php?order_id=$order_id</td><td></td></tr>";
+$message .= '<h3 style="color:orange">Contact Details</h3>';
+$message .= "<tr><td><strong>Name:</strong> </td><td>" . strip_tags($_POST['name']) . "</td></tr>";
+$message .= "<tr><td><strong>Address:</strong> </td><td>" . strip_tags($_POST['address']) . "</td></tr>";
+$message .= "<tr><td><strong>Contact Number:</strong> </td><td>" . strip_tags($_POST['phone']) . "</td></tr>";
+$message .= "<tr><td><strong>Email:</strong> </td><td>" . strip_tags($_POST['email']) . "</td></tr>";
+$message .= "</body></html>";
+// Sending email
+if(mail($to, $subject, $message, $headers)){
+     echo "<script type='text/javascript'>alert('emailsent');</script>";
+} else{
+     echo "<script type='text/javascript'>alert('not emailsent');</script>";
+}
 
+
+// eamil ends
 
           Utility::redirect_to("order.php?id=".$order_id);
      } else {
@@ -284,7 +320,7 @@ if (isset($_POST["confirm"])) {
                                         <div class="col-sm-6 col-md-12 col-xs-12">
                                              <div class="form-group">
                                                   <label class="control-label">Zip:</label>
-                                                  <input type="text" name="zip" class="form-control" required>
+                                                  <input type="text" pattern="[0-5]*" name="zip" class="form-control" required>
                                              </div>
                                         </div>
                                    </div>
@@ -314,7 +350,7 @@ if (isset($_POST["confirm"])) {
                                    <div class="form-group">
                                         <label class="control-label">
                                              <input type="checkbox" name="terms" required>
-                                             I agree with the <a href="terms.html" target="_blank">Terms &amp; Conditions</a>
+                                             I agree with the <a href="terms.php" target="_blank">Terms &amp; Conditions</a>
                                         </label>
                                    </div>
 

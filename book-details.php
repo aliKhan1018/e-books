@@ -10,7 +10,6 @@ if (isset($_SESSION["user_id"])) {
     Utility::redirect_to("login.php");
 }
 
-// mail('m.alikhaninbox@gmail.com', 'Order Completed!', 'Your Order #1018420 has been completed!\nPlease click the link to download the book <a href="localhost/e-books/pdf/1984.pdf" download="1984">DOWNLOAD BOOK</a>');
 $book_id = $_GET["id"];
 $_book = $db->get_entity('book', $book_id);
 
@@ -25,7 +24,10 @@ if (isset($_POST['add'])) {
     } else {
         $_SESSION['cart'][$book_id] = array('ver' => "$version", 'qty' => $quantity);
     }
-    $db->update_entity('book', 'stock', $new_stock, $_book["id"]);
+    
+    if ($version == "phy") {
+        $db->update_entity('book', 'stock', $new_stock, $_book["id"]);
+    }
 
     Utility::redirect_to("book-details.php?id=$book_id");
 }

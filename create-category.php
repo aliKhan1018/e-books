@@ -5,23 +5,23 @@ session_start();
 $db = new database();
 
 if (isset($_POST["add"])) {
-    $title = $_POST["title"];
-    $desc = $_POST["desc"];
-    $author = $_POST["author"];
-    $pubon = $_POST["pubon"];
-    $publisher = $_POST["publisher"];
-    $price = $_POST["price"];
-    $stock = $_POST["stock"];
+    // $title = $_POST["title"];
+    // $desc = $_POST["desc"];
+    // $author = $_POST["author"];
+    // $pubon = $_POST["pubon"];
+    // $publisher = $_POST["publisher"];
+    // $price = $_POST["price"];
+    // $stock = $_POST["stock"];
     $category = $_POST["category"];
 
-    $img = $_FILES["image"]["name"];
-    $path = "./img/uploaded/" . $img;
-    move_uploaded_file($_FILES["image"]["tmp_name"], $path);
+    // $img = $_FILES["image"]["name"];
+    // $path = "./img/uploaded/" . $img;
+    // move_uploaded_file($_FILES["image"]["tmp_name"], $path);
 
-    $q = "INSERT INTO book (`title`, `description`, `price`, `author`, `publisher`, `publishedon`, `stock`, `category_id`, `image`) VALUES ('$title', '$desc', '$price', '$author', '$publisher', '$pubon', '$stock', '$category', '$img')";
+    $q = "INSERT INTO category (`name`) VALUES ('$category')";
     $res = $db->query($q);
     if ($res) {
-        // echo "<div class='alert alert-success'><b>Book Added Successfully!</b></div>";
+        echo "<div class='alert alert-success'><b>Successfully!</b></div>";
     } else {
         echo Utility::alert("Error! Check console.");
     }
@@ -52,7 +52,7 @@ if (isset($_POST["add"])) {
             <div class="main-content">
                 <section class="section">
                     <div class="section-header">
-                        <h1>Add Book</h1>
+                        <h1>Create Category</h1>
                     </div>
 
                     <div class="section-body">
@@ -68,7 +68,7 @@ if (isset($_POST["add"])) {
                                 </div>
                                 <form method="post" action="" enctype="multipart/form-data">
                                     <div class="card-body">
-                                        <div class="form-group">
+                                        <!-- <div class="form-group">
                                             <label>Category i'd</label>
                                             <div class="input-group">
                                                 <div class="input-group-prepend">
@@ -76,8 +76,8 @@ if (isset($_POST["add"])) {
                                                         <i class="fa fa-book"></i>
                                                     </div>
                                                 </div>
-                                                <input type="text" name="title" class="form-control">
-                                            </div>
+                                                <input required type="text" name="title" class="form-control">
+                                            </div> -->
                                         </div>
                                         <div class="form-group">
                                             <label>Name</label>
@@ -87,12 +87,12 @@ if (isset($_POST["add"])) {
                                                         <i class="fa fa-user"></i>
                                                     </div>
                                                 </div>
-                                                <input type="text" name="name" class="form-control">
+                                                <input required type="text" name="category" class="form-control">
                                             </div>
                                         </div>
                                         
                                         <div class="form-group">
-                                            <input type="submit" value="Add Book" name="add" class="btn btn-secondary" style="float: right;">
+                                            <input  type="submit" value="Add" name="add" class="btn btn-secondary" style="float: right;">
                                         </div>
                                     </div>
                                 </form>

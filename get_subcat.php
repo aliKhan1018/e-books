@@ -7,7 +7,7 @@
 	$q = "SELECT * FROM subcategory where category_id = $category_id";
 	$result = $db->query($q);
 ?>
-<option value="">Select SubCategory</option>
+<option value="0" selected>Select SubCategory</option>
 <?php
 while($row = mysqli_fetch_array($result)) {
 ?>

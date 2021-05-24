@@ -65,13 +65,30 @@ var balance_chart_bg_color = balance_chart.createLinearGradient(0, 0, 0, 70);
 balance_chart_bg_color.addColorStop(0, 'rgba(63,82,227,.2)');
 balance_chart_bg_color.addColorStop(1, 'rgba(63,82,227,0)');
 
+let dates = [];
+let registrations = [];
+let balance = [];
+const upto = document.getElementById('upto').value;
+let cf = 0;
+for (let i = 0; i < upto; i++) {
+  const date = document.getElementById(`date-${i}`).value;
+  const registration = document.getElementById(`registrations-${i}`).value;
+  const _balance = document.getElementById(`balance-${i}`).value;
+  console.log(cf);
+  cf += parseFloat(_balance);
+  dates.push(date);
+  registrations.push(registration);
+  balance.push(cf);
+}
+
+
 var myChart = new Chart(balance_chart, {
   type: 'line',
   data: {
-    labels: ['30-07-2018', '31-07-2018'],
+    labels: dates.reverse(),
     datasets: [{
       label: 'Balance',
-      data: [50, 61],
+      data: balance,
       backgroundColor: balance_chart_bg_color,
       borderWidth: 3,
       borderColor: 'rgba(63,82,227,1)',
@@ -122,13 +139,18 @@ var sales_chart_bg_color = sales_chart.createLinearGradient(0, 0, 0, 80);
 balance_chart_bg_color.addColorStop(0, 'rgba(63,82,227,.2)');
 balance_chart_bg_color.addColorStop(1, 'rgba(63,82,227,0)');
 
+
+console.log(dates);
+console.log(registrations);
+console.log(balance);
+
 var myChart = new Chart(sales_chart, {
   type: 'line',
   data: {
-    labels: ['16-07-2018', '17-07-2018', '18-07-2018', '19-07-2018', '20-07-2018', '21-07-2018', '22-07-2018', '23-07-2018', '24-07-2018', '25-07-2018', '26-07-2018', '27-07-2018', '28-07-2018', '29-07-2018', '30-07-2018', '31-07-2018'],
+    labels: dates.reverse(), // dates
     datasets: [{
-      label: 'Sales',
-      data: [70, 62, 44, 40, 21, 63, 82, 52, 50, 31, 70, 50, 91, 63, 51, 60],
+      label: 'Users',
+      data: registrations.reverse(), // registrations
       borderWidth: 2,
       backgroundColor: balance_chart_bg_color,
       borderWidth: 3,

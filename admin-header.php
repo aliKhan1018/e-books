@@ -38,13 +38,6 @@ $user = $db->get_entity('user', $id);
         </div>
         <ul class="sidebar-menu">
             <li class="menu-header">Dashboard</li>
-            <li class="dropdown active">
-                <a href="#" class="nav-link has-dropdown"><i class="fa fa-fire"></i><span>Dashboard</span></a>
-                <ul class="dropdown-menu">
-                    <li><a class="nav-link" href="index-0.html">Analytics</a></li>
-                    <li class="active"><a class="nav-link" href="index-2.html">Ecommerce</a></li>
-                </ul>
-            </li>
             <li class="menu-header">Views</li>
             <li class="dropdown">
                 <a href="#" class="nav-link has-dropdown" data-toggle="dropdown"><i class="fa fa-list"></i> <span>Lists</span></a>
@@ -54,12 +47,10 @@ $user = $db->get_entity('user', $id);
                     <li><a class="nav-link" href="list-order.php">Orders</a></li>
                     <li><a class="nav-link" href="list-category.php">Category</a></li>
                     <li><a class="nav-link" href="list-subcategory.php">Sub Category</a></li>
-                    <li><a class="nav-link" href="list-genre.php">Genre</a></li>
                     <li><a class="nav-link" href="list-competition.php">Competition</a></li>
                     <li class="dropdown">
                         <a href="#" class="nav-link has-dropdown" data-toggle="dropdown"><i class="fa fa-plug"></i> <span>Bridge Entities</span></a>
                         <ul class="dropdown-menu">
-                            <li><a href="list-book_genre.php" class="nav-link">Book Genre</a></li>
                             <li><a href="list-book_order.php" class="nav-link">Book Order</a></li>
                         </ul>
                     </li>
@@ -70,6 +61,8 @@ $user = $db->get_entity('user', $id);
                 <ul class="dropdown-menu">
                     <li><a class="nav-link" href="create-book.php">Book</a></li>
                     <li><a class="nav-link" href="create-competition.php">Competition</a></li>
+                    <li><a class="nav-link" href="create-category.php">Category</a></li>
+                    <li><a class="nav-link" href="create-subcategory.php">Sub Category</a></li>
                 </ul>
             </li>
     </aside>

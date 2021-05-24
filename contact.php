@@ -2,10 +2,14 @@
 include "./inc/database.inc.php";
 session_start();
 $db = new database();
-$user_id = $_SESSION["user_id"];
 if (isset($_SESSION["user_id"])) {
   $u = $db->get_entity('user', $_SESSION["user_id"]);
 }
+else{
+  Utility::redirect_to("login.php");
+}
+
+
 
 if (isset($_POST["add"])) {
   $name = $_POST["name"];

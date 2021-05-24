@@ -20,16 +20,10 @@
                         <div class="row">
                             <div class="col-md-6">
                                 <ul>
-                                    <li><a href="inde.html"><i class="fa fa-stop"></i>Home</a></li>
-                                    <li><a href="about.html"><i class="fa fa-stop"></i>About</a></li>
-                                    <li><a href="contact.html"><i class="fa fa-stop"></i>Contact Us</a></li>
-                                </ul>
-                            </div>
-                            <div class="col-md-6">
-                                <ul>
-                                    <li><a href="products.html"><i class="fa fa-stop"></i>Products</a></li>
-                                    <li><a href="testimonials.html"><i class="fa fa-stop"></i>Testimonials</a></li>
-                                    <li><a href="blog.html"><i class="fa fa-stop"></i>Blog</a></li>
+                                    <li><a href="index.php"><i class="fa fa-stop"></i>Home</a></li>
+                                    <li><a href="about.php"><i class="fa fa-stop"></i>About</a></li>
+                                    <li><a href="contact.php"><i class="fa fa-stop"></i>Contact Us</a></li>
+                                    <li><a href="terms.php"><i class="fa fa-stop"></i>Terms of Agreement</a></li>
                                 </ul>
                             </div>
                         </div>
@@ -43,7 +37,7 @@
                         <p><i class="fa fa-map-marker"></i> 13/E Gulshan-e-Iqbal, Karachi</p>
                         <ul>
                             <li><span>Phone:</span><a href="#">+92 300 1018420</a></li>
-                            <li><span>Email:</span><a href="#">info@iqra.com</a></li>
+                            <li><span>Email:</span><a href="mailto:ebookiqrainfo@gmail.com">ebookiqrainfo@gmail.com</a></li>
                         </ul>
                     </div>
                 </div>

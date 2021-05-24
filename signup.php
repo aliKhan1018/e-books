@@ -23,11 +23,12 @@ if (isset($_POST["reg"])) {
         $path = "./img/uploaded/" . $img;
         move_uploaded_file($_FILES["image"]["tmp_name"], $path);
 
-        $q = "insert into user(name, email, password, dob, creditcard, image, address, contactnumber, gender, isadmin, isseller, createdon)
+        $q = "INSERT into `user`(`name`, `email`, `password`, `dob`, `creditcard`, `image`, `address`, `contactnumber`, `gender`, `isadmin`, `isseller`, `createdon`)
             values('$n', '$e', '$p', '$dob', '$cc', '$img', '$a', '$cn', '$g', 0, 0, '$now')";
         $res = $db->query($q);
         if ($res) {
             echo Utility::alert("Account Created!");
+            Utility::redirect_to("login.php?email=$e");
         } else {
             echo Utility::alert("Error! Check console.");
         }
@@ -148,5 +149,16 @@ if (isset($_POST["reg"])) {
         image.src = URL.createObjectURL(event.target.files[0]);
     };
 </script>
+
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.2/jquery.min.js" type="text/javascript"></script>
+    <script>
+        window.jQuery || document.write('<script src="js/vendor/jquery-1.11.2.min.js"><\/script>')
+    </script>
+
+    <script src="js/vendor/bootstrap.min.js"></script>
+
+    <script src="js/datepicker.js"></script>
+    <script src="js/plugins.js"></script>
+    <script src="js/main.js"></script>
 
 </html>

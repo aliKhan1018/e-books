@@ -11,8 +11,17 @@ if (isset($_SESSION["user_id"])) {
 }
 
 $date = Utility::get_date_formatted();
-$q = "SELECT * FROM competition WHERE start_time > $date";
+$q = "SELECT * FROM `competition` where `start_time` > '$date'";
 $upcoming_competitions = $db->query($q);
+
+$q = "SELECT * FROM `competition` where `start_time` = '2021-04-06'";
+$res = $db->query($q);
+
+$ongoing_competition = $res->fetch_assoc();
+
+$q = "SELECT count(id) as total FROM `participant` where competition_id = " . $ongoing_competition["id"];
+$participant_count = $db->query($q)->fetch_assoc()["total"];
+
 
 
 ?>
@@ -36,6 +45,7 @@ $upcoming_competitions = $db->query($q);
                 <div class="col-md-10 col-md-offset-1">
                     <div class="banner-caption">
                         <h2 style="font-family: 'Playfair Display'; font-weight:800; font-size:6rem;">IQRA</h2>
+                        <!-- <h4 style="font-family: 'Playfair Display'; font-weight:300; font-size:2rem;"> Book ki Daraz </h4> -->
                         <h2 style="font-family: 'Nunito', sans-serif; font-weight:500;">Reading Evolved</h2>
                         <div class="line-dec"></div>
                         <div class="blue-button">
@@ -47,25 +57,43 @@ $upcoming_competitions = $db->query($q);
         </div>
     </section>
 
-    <section class="our-services" id="about">
+    <!-- <section class="our-services" id="about">
         <div class="container">
             <div class="row">
                 <div class="col-md-7">
                     <div class="left-content">
                         <br>
-                        <h4 class="heading">Competitions</h4>
+                        <h4 class="heading">Ongoing Competitions</h4>
+                        <?php
+                        if ($ongoing_competition) {
+                        ?>
+                            <p>Previous Winner: [name here]</p>
+                            <strong>
+                                <p>Topic: <?= $ongoing_competition["topic"] ?></p>
+                                <p>Lasts till: <?= $ongoing_competition["end_time"] ?></p>
+                                <p>Participants: <?= $participant_count ?></p>
+                            </strong>
 
+                            <div class="submit" style="float: left;">
+                                <a href="participate.php?id=<?= $ongoing_competition["id"] ?>">Participate Now</a>
+                            </div>
+                        <?php
+                        }
+                        ?>
                         <br>
                     </div>
                 </div>
                 <div class="col-md-5">
                     <h2>Upcoming</h2>
+
                     <?php
                     if ($upcoming_competitions) {
+                        $i = 0;
                         while ($row = mysqli_fetch_array($upcoming_competitions)) {
+                            $i++;
                     ?>
-                        <p><?=$row["topic"]?></p>
-                        <p><?=$row["start_time"]?> - <?=$row["end_time"]?></p>
+                            <p><?= $i ?>. <?= $row["topic"] ?></p>
+                            <p><?= $row["start_time"] ?> - <?= $row["end_time"] ?></p>
                     <?php
                         }
                     }
@@ -73,7 +101,7 @@ $upcoming_competitions = $db->query($q);
                 </div>
             </div>
         </div>
-    </section>
+    </section> -->
 
     <main>
 
@@ -136,7 +164,11 @@ $upcoming_competitions = $db->query($q);
                                                         }
                                                         ?> </h1>
                                     <h2 class="author"><?= $row['author'] ?></h2>
-                                    <p><?= substr($row['description'], 0, 125) ?>...</p>
+                                    <p><?php echo substr($row['description'], 0, 125);
+                                        if (strlen($row["description"]) > 125) {
+                                            echo "...";
+                                        }
+                                        ?> </p>
                                     <a href="book-details.php?id=<?= $row['id'] ?>">
                                         <div class="buy-button" style="width: 100%;"><b>Buy Now!</b></div>
                                     </a>
@@ -164,7 +196,7 @@ $upcoming_competitions = $db->query($q);
             </div>
         </section>
 
-        <section class="popular-places" id="popular">
+        <!-- <section class="popular-places" id="popular">
             <div class="container">
                 <div class="row">
                     <div class="col-md-12">
@@ -262,7 +294,7 @@ $upcoming_competitions = $db->query($q);
                     </div>
                 </div>
             </div>
-        </section>
+        </section> -->
     </main>
 
     <?php

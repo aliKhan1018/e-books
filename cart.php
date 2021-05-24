@@ -7,8 +7,19 @@ if (isset($_POST['rem'])) {
      // echo Utility::alert($_POST['rem']);
      $rem_id = $_POST['rem'];
      $book_to_remove = $db->get_entity('book', $rem_id);
+     $new_stock = $book_to_remove["stock"] + $_SESSION['cart'][$rem_id]["qty"];
+     $db->update_entity('book', 'stock', $new_stock, $rem_id);
 
      unset($_SESSION['cart'][$rem_id]);
+     if (count($_SESSION['cart']) == 0) {
+          unset($_SESSION['cart']);
+     }
+}
+
+if (isset($_POST['add'])) {
+          
+     
+
 }
 
 
@@ -55,10 +66,10 @@ if (isset($_POST['rem'])) {
                                                   </td>
                                                   <td>
                                                        <?php
-                                                       if ($value["ver"] == "phy") {
+                                                       // if ($value["ver"] == "phy") {
                                                        ?>
-                                                            <input type="number" name="quantity" value="<?= $value['qty'] ?>" min="0" max="<?= $book['stock'] ?>" id="qty" onchange="updatePrice(<?= $book['price'] ?>)">
-                                                       <?php } ?>     
+                                                       <input type="number" name="quantity" value="<?= $value['qty'] ?>" min="0" max="<?= $book['stock'] ?>" id="qty" onchange="updatePrice(<?= $book['price'] ?>)" disabled />
+                                                       <?php  ?>
                                                   </td>
                                                   <td>$<span id="price"><?= $book["price"] ?></span></td>
                                                   <td><button type="submit" class="btn btn-danger" name="rem" value="<?= $key ?>">Remove Book</button></td>
@@ -88,7 +99,10 @@ if (isset($_POST['rem'])) {
                                              <?php
                                              if (isset($_SESSION['cart'])) {
                                              ?>
-                                                  <a style="float:right" href="./checkout.php">Checkout</a>
+                                                  <div class="submit">
+                                                       <a style="float:right" href="./checkout.php">Checkout</a>
+                                                  </div>
+                                                  <!-- <input type="submit" value="Proceed to Checkout" class="submit"> -->
                                              <?php
                                              }
                                              ?>
@@ -110,6 +124,16 @@ if (isset($_POST['rem'])) {
           //      document.getElementById("price").innerText = total;
           // }
      </script>
+     <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.2/jquery.min.js" type="text/javascript"></script>
+    <script>
+        window.jQuery || document.write('<script src="js/vendor/jquery-1.11.2.min.js"><\/script>')
+    </script>
+
+    <script src="js/vendor/bootstrap.min.js"></script>
+
+    <script src="js/datepicker.js"></script>
+    <script src="js/plugins.js"></script>
+    <script src="js/main.js"></script>
 </body>
 
 </html>

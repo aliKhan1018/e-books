@@ -3,27 +3,55 @@ session_start();
 include "./inc/database.inc.php";
 $db = new database();
 
+// $q = "SELECT"
 $orders = $db->get_entities('order');
 $total_orders = $orders->num_rows;
 
-$q = "SELECT SUM(cost) as total FROM `order` WHERE `status` = 'completed'";
-$res = $db->query($q)->fetch_assoc()["total"];
+$q = "SELECT substring(orderedon, 1, 10) as `orderedon_date`, SUM(cost) as `total_balance`, count(id) as `total_orders` FROM `order` WHERE `status` = 'completed' or `payment` = 'cc'";
+$res = $db->query($q)->fetch_assoc()["total_balance"];
+$completed_orders = $db->query($q)->fetch_assoc()["total_orders"];
+$orderedon_date = $db->query($q)->fetch_assoc()["orderedon_date"];
 $total_balance = $res ? $res : 0;
 
 $q = "SELECT COUNT(id) as total FROM `order` WHERE `status` = 'pending'";
 $pending_orders = $db->query($q)->fetch_assoc()["total"];
 
-$q = "SELECT COUNT(id) as total FROM `order` WHERE `status` = 'completed'";
-$completed_orders = $db->query($q)->fetch_assoc()["total"];
 
-$q = "SELECT COUNT(id) as total from `user`";
+$q = "SELECT COUNT(id) as total FROM `order` WHERE `status` = 'confirmed'";
+$confirmed_orders = $db->query($q)->fetch_assoc()["total"];
+
+$q = "SELECT COUNT(id) as total from `user` where `isadmin` = 0";
 $users = $db->query($q)->fetch_assoc()["total"];
 
 $q = "SELECT COUNT(id) as total from `contact`";
 $contact_count = $db->query($q)->fetch_assoc()["total"];
 
 $q = "SELECT * from `contact` where resolved = 0 order by id desc limit 3";
-$contacts = $db->query($q);
+$contacts_limited = $db->query($q);
+
+$q = "SELECT createdon, count(id) as registeration FROM `user` WHERE `isadmin` = 0 group by createdon";
+$registration = $db->query($q);
+
+
+$today = date("Y-m-d");
+$upto = 30;
+echo "<input type='hidden' value='$upto' id='upto'>";
+
+for ($i = 0; $i < $upto; $i++) {
+    $date = date("Y-m-d", strtotime("-$i days"));
+
+    $q = "SELECT COUNT(id) as registrations from `user` where `createdon` = '$date'";
+    $registrations = $db->query($q)->fetch_assoc()["registrations"];
+    $registrations = $registrations ? $registrations : 0;
+
+    $q = "SELECT SUM(cost) as balance from `order` where  (`status` = 'completed' or `payment` = 'cc') and SUBSTRING(`orderedon`, 1, 10) = '$date'";
+    $current_balance = $db->query($q)->fetch_assoc()["balance"];
+    $current_balance = $current_balance ? $current_balance : 0;
+
+    echo "<input type='hidden' value='$registrations' name='registrations' id='registrations-$i'>";
+    echo "<input type='hidden' value='$current_balance' name='earnings' id='balance-$i'>";
+    echo "<input type='hidden' value='$date' name='dates' id='date-$i'>";
+}
 
 
 ?>
@@ -62,8 +90,8 @@ $contacts = $db->query($q);
                                             <div class="card-stats-item-label">Pending</div>
                                         </div>
                                         <div class="card-stats-item">
-                                            <!-- <div class="card-stats-item-count">12</div> -->
-                                            <!-- <div class="card-stats-item-label">Shipping</div> -->
+                                            <div class="card-stats-item-count"><?= $confirmed_orders ?></div>
+                                            <div class="card-stats-item-label">Confirmed</div>
                                         </div>
                                         <div class="card-stats-item">
                                             <div class="card-stats-item-count"><?= $completed_orders ?></div>
@@ -97,7 +125,7 @@ $contacts = $db->query($q);
                                         <h4>Balance</h4>
                                     </div>
                                     <div class="card-body">
-                                        $<?= $total_balance ?>
+                                        $<?= number_format((float)$total_balance, 2, '.', ''); ?>
                                     </div>
                                 </div>
                             </div>
@@ -128,7 +156,7 @@ $contacts = $db->query($q);
                         <div class="col-lg-4">
                             <div class="card gradient-bottom">
                                 <div class="card-header">
-                                    <h4>Top 5 Books</h4>
+                                    <h4>Books Sales</h4>
                                 </div>
                                 <div class="card-body" id="top-5-scroll">
                                     <ul class="list-unstyled list-unstyled-border">
@@ -162,7 +190,7 @@ $contacts = $db->query($q);
                                             $total_sales = $physical["phy_sales"] + $pdf["pdf_sales"];
                                         ?>
                                             <li class="media">
-                                                <img class="mr-3 rounded" width="55" src="./img/uploaded/<?=$row["image"]?>" alt="product">
+                                                <img class="mr-3 rounded" width="55" src="./img/uploaded/<?= $row["image"] ?>" alt="product">
                                                 <div class="media-body">
                                                     <div class="float-right">
                                                         <div class="font-weight-600 text-muted text-small"><?= $total_sales ?> Sales</div>
@@ -172,11 +200,11 @@ $contacts = $db->query($q);
                                                         <!-- // ? see if you can work out percentages...well you can..but...yeah..this is weird. -->
                                                         <div class="budget-price">
                                                             <div class="budget-price-square bg-primary" data-width="<?= $phy_earnings_perc ?>%"></div>
-                                                            <div class="budget-price-label">$<?= $total_phy_earnings ?></div>
+                                                            <div class="budget-price-label">$<?= number_format((float)$total_phy_earnings, 2, '.', ''); ?></div>
                                                         </div>
                                                         <div class="budget-price">
                                                             <div class="budget-price-square bg-danger" data-width="<?= $pdf_earnings_perc ?>%"></div>
-                                                            <div class="budget-price-label">$<?= $total_pdf_earnings ?></div>
+                                                            <div class="budget-price-label">$<?= number_format((float)$total_pdf_earnings, 2, '.', ''); ?></div>
                                                         </div>
                                                     </div>
                                                 </div>
@@ -208,7 +236,7 @@ $contacts = $db->query($q);
                                 </div>
                                 <div class="card-body p-0">
                                     <div class="tickets-list">
-                                        <?php while ($row = mysqli_fetch_array($contacts)) { ?>
+                                        <?php while ($row = mysqli_fetch_array($contacts_limited)) { ?>
                                             <a href="#" class="ticket-item">
                                                 <div class="ticket-title">
                                                     <h4><?= substr($row["subject"], 0, 50) ?></h4>
@@ -224,7 +252,7 @@ $contacts = $db->query($q);
                                                 </div>
                                             </a>
                                         <?php } ?>
-                                        <a href="features-tickets.html" class="ticket-item ticket-more">
+                                        <a href="list-contact.php" class="ticket-item ticket-more">
                                             View All <i class="fa fa-chevron-right"></i>
                                         </a>
 
@@ -233,226 +261,7 @@ $contacts = $db->query($q);
                             </div>
                         </div>
                     </div>
-                    <!-- <div class="row row-deck">
-                        <div class="col-md-6">
-                            <div class="card">
-                                <div class="card-header">
-                                    <h4>Best Products</h4>
-                                </div>
-                                <div class="card-body">
-                                    <div class="owl-carousel owl-theme" id="products-carousel">
-                                        <div>
-                                            <div class="product-item pb-3">
-                                                <div class="product-image">
-                                                    <img alt="image" src="assets/img/products/product-4-50.png" class="img-fluid">
-                                                </div>
-                                                <div class="product-details">
-                                                    <div class="product-name">iBook Pro 2018</div>
-                                                    <div class="product-review">
-                                                        <i class="fa fa-star"></i>
-                                                        <i class="fa fa-star"></i>
-                                                        <i class="fa fa-star"></i>
-                                                        <i class="fa fa-star"></i>
-                                                        <i class="fa fa-star"></i>
-                                                    </div>
-                                                    <div class="text-muted text-small">67 Sales</div>
-                                                    <div class="product-cta">
-                                                        <a href="#" class="btn btn-primary">Detail</a>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                        </div>
-                                        <div>
-                                            <div class="product-item">
-                                                <div class="product-image">
-                                                    <img alt="image" src="assets/img/products/product-3-50.png" class="img-fluid">
-                                                </div>
-                                                <div class="product-details">
-                                                    <div class="product-name">oPhone S9 Limited</div>
-                                                    <div class="product-review">
-                                                        <i class="fa fa-star"></i>
-                                                        <i class="fa fa-star"></i>
-                                                        <i class="fa fa-star"></i>
-                                                        <i class="fa fa-star"></i>
-                                                        <i class="fa fa-star-half"></i>
-                                                    </div>
-                                                    <div class="text-muted text-small">86 Sales</div>
-                                                    <div class="product-cta">
-                                                        <a href="#" class="btn btn-primary">Detail</a>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                        </div>
-                                        <div>
-                                            <div class="product-item">
-                                                <div class="product-image">
-                                                    <img alt="image" src="assets/img/products/product-1-50.png" class="img-fluid">
-                                                </div>
-                                                <div class="product-details">
-                                                    <div class="product-name">Headphone Blitz</div>
-                                                    <div class="product-review">
-                                                        <i class="fa fa-star"></i>
-                                                        <i class="fa fa-star"></i>
-                                                        <i class="fa fa-star"></i>
-                                                        <i class="fa fa-star"></i>
-                                                        <i class="fa fa-star"></i>
-                                                    </div>
-                                                    <div class="text-muted text-small">63 Sales</div>
-                                                    <div class="product-cta">
-                                                        <a href="#" class="btn btn-primary">Detail</a>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="col-md-6">
-                            <div class="card">
-                                <div class="card-header">
-                                    <h4>Top Countries</h4>
-                                </div>
-                                <div class="card-body">
-                                    <div class="row">
-                                        <div class="col-sm-6">
-                                            <div class="text-title mb-2">July</div>
-                                            <ul class="list-unstyled list-unstyled-border list-unstyled-noborder mb-0">
-                                                <li class="media">
-                                                    <img class="img-fluid mt-1 img-shadow" src="http://puffintheme.com/craft/codiepie/dist/assets/modules/flag-icon-css/flags/4x3/id.svg" alt="image" width="40">
-                                                    <div class="media-body ml-3">
-                                                        <div class="media-title">USA</div>
-                                                        <div class="text-small text-muted">3,282 <i class="fa fa-caret-down text-danger"></i></div>
-                                                    </div>
-                                                </li>
-                                                <li class="media">
-                                                    <img class="img-fluid mt-1 img-shadow" src="http://puffintheme.com/craft/codiepie/dist/assets/modules/flag-icon-css/flags/4x3/my.svg" alt="image" width="40">
-                                                    <div class="media-body ml-3">
-                                                        <div class="media-title">Malaysia</div>
-                                                        <div class="text-small text-muted">2,976 <i class="fa fa-caret-down text-danger"></i></div>
-                                                    </div>
-                                                </li>
-                                                <li class="media">
-                                                    <img class="img-fluid mt-1 img-shadow" src="http://puffintheme.com/craft/codiepie/dist/assets/modules/flag-icon-css/flags/4x3/us.svg" alt="image" width="40">
-                                                    <div class="media-body ml-3">
-                                                        <div class="media-title">United States</div>
-                                                        <div class="text-small text-muted">1,576 <i class="fa fa-caret-up text-success"></i></div>
-                                                    </div>
-                                                </li>
-                                            </ul>
-                                        </div>
-                                        <div class="col-sm-6 mt-sm-0 mt-4">
-                                            <div class="text-title mb-2">August</div>
-                                            <ul class="list-unstyled list-unstyled-border list-unstyled-noborder mb-0">
-                                                <li class="media">
-                                                    <img class="img-fluid mt-1 img-shadow" src="http://puffintheme.com/craft/codiepie/dist/assets/modules/flag-icon-css/flags/4x3/id.svg" alt="image" width="40">
-                                                    <div class="media-body ml-3">
-                                                        <div class="media-title">USA</div>
-                                                        <div class="text-small text-muted">3,486 <i class="fa fa-caret-up text-success"></i></div>
-                                                    </div>
-                                                </li>
-                                                <li class="media">
-                                                    <img class="img-fluid mt-1 img-shadow" src="http://puffintheme.com/craft/codiepie/dist/assets/modules/flag-icon-css/flags/4x3/ps.svg" alt="image" width="40">
-                                                    <div class="media-body ml-3">
-                                                        <div class="media-title">Palestine</div>
-                                                        <div class="text-small text-muted">3,182 <i class="fa fa-caret-up text-success"></i></div>
-                                                    </div>
-                                                </li>
-                                                <li class="media">
-                                                    <img class="img-fluid mt-1 img-shadow" src="http://puffintheme.com/craft/codiepie/dist/assets/modules/flag-icon-css/flags/4x3/de.svg" alt="image" width="40">
-                                                    <div class="media-body ml-3">
-                                                        <div class="media-title">Germany</div>
-                                                        <div class="text-small text-muted">2,317 <i class="fa fa-caret-down text-danger"></i></div>
-                                                    </div>
-                                                </li>
-                                            </ul>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </div> -->
-                    <!-- <div class="row row-deck">
-                        <div class="col-md-12">
-                            <div class="card">
-                                <div class="card-header">
-                                    <h4>Invoices</h4>
-                                    <div class="card-header-action">
-                                        <a href="#" class="btn btn-danger">View More <i class="fa fa-chevron-right"></i></a>
-                                    </div>
-                                </div>
-                                <div class="card-body p-0">
-                                    <div class="table-responsive table-invoice">
-                                        <table class="table table-striped">
-                                            <tr>
-                                                <th>Invoice ID</th>
-                                                <th>Customer</th>
-                                                <th>Status</th>
-                                                <th>Due Date</th>
-                                                <th>Action</th>
-                                            </tr>
-                                            <tr>
-                                                <td><a href="#">INV-87239</a></td>
-                                                <td class="font-weight-600">Kusnadi</td>
-                                                <td>
-                                                    <div class="badge badge-warning">Unpaid</div>
-                                                </td>
-                                                <td>July 19, 2018</td>
-                                                <td>
-                                                    <a href="#" class="btn btn-primary">Detail</a>
-                                                </td>
-                                            </tr>
-                                            <tr>
-                                                <td><a href="#">INV-48574</a></td>
-                                                <td class="font-weight-600">Susie Willis</td>
-                                                <td>
-                                                    <div class="badge badge-success">Paid</div>
-                                                </td>
-                                                <td>July 21, 2018</td>
-                                                <td>
-                                                    <a href="#" class="btn btn-primary">Detail</a>
-                                                </td>
-                                            </tr>
-                                            <tr>
-                                                <td><a href="#">INV-76824</a></td>
-                                                <td class="font-weight-600">Muhamad Nuruzzaki</td>
-                                                <td>
-                                                    <div class="badge badge-warning">Unpaid</div>
-                                                </td>
-                                                <td>July 22, 2018</td>
-                                                <td>
-                                                    <a href="#" class="btn btn-primary">Detail</a>
-                                                </td>
-                                            </tr>
-                                            <tr>
-                                                <td><a href="#">INV-84990</a></td>
-                                                <td class="font-weight-600">Agung Ardiansyah</td>
-                                                <td>
-                                                    <div class="badge badge-warning">Unpaid</div>
-                                                </td>
-                                                <td>July 22, 2018</td>
-                                                <td>
-                                                    <a href="#" class="btn btn-primary">Detail</a>
-                                                </td>
-                                            </tr>
-                                            <tr>
-                                                <td><a href="#">INV-87320</a></td>
-                                                <td class="font-weight-600">Ardian Rahardiansyah</td>
-                                                <td>
-                                                    <div class="badge badge-success">Paid</div>
-                                                </td>
-                                                <td>July 28, 2018</td>
-                                                <td>
-                                                    <a href="#" class="btn btn-primary">Detail</a>
-                                                </td>
-                                            </tr>
-                                        </table>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
 
-                    </div> -->
                 </section>
             </div>
 

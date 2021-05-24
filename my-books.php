@@ -7,7 +7,7 @@ $user_id = $_SESSION["user_id"];
 $q = "SELECT `order`.`id` as `order_id`, `book_order`.`book_id`, `book_order`.`status` from `order`
         left join `book_order`
         on `order`.`id` = `book_order`.`order_id`
-        where `order`.`user_id` = $user_id AND `book_order`.`version` = 'pdf'
+        where `order`.`user_id` = $user_id AND `book_order`.`version` = 'pdf' AND (`order`.`status` = 'completed' or `order`.`status` = 'confirmed')
         group by `book_order`.`book_id`";
 $res = $db->query($q);
 ?>
@@ -17,7 +17,6 @@ $res = $db->query($q);
 
 <head>
     <?php include "./head.php"; ?>
-
 </head>
 
 <body>
@@ -63,6 +62,16 @@ $res = $db->query($q);
     </section>
 
     <?php include "./footer.php"; ?>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.2/jquery.min.js" type="text/javascript"></script>
+    <script>
+        window.jQuery || document.write('<script src="js/vendor/jquery-1.11.2.min.js"><\/script>')
+    </script>
+
+    <script src="js/vendor/bootstrap.min.js"></script>
+
+    <script src="js/datepicker.js"></script>
+    <script src="js/plugins.js"></script>
+    <script src="js/main.js"></script>
 </body>
 
 </html>
